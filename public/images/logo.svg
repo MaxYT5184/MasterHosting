@@ -1,0 +1,36 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="95" fill="url(#gradient)" />
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#818cf8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Server Icon -->
+  <g transform="translate(50, 50)">
+    <!-- Server Rack 1 -->
+    <rect x="10" y="10" width="80" height="20" rx="3" fill="white" opacity="0.9"/>
+    <circle cx="20" cy="20" r="3" fill="#6366f1"/>
+    <circle cx="30" cy="20" r="3" fill="#10b981"/>
+    <rect x="40" y="17" width="40" height="6" rx="2" fill="#e5e7eb"/>
+    
+    <!-- Server Rack 2 -->
+    <rect x="10" y="40" width="80" height="20" rx="3" fill="white" opacity="0.9"/>
+    <circle cx="20" cy="50" r="3" fill="#6366f1"/>
+    <circle cx="30" cy="50" r="3" fill="#10b981"/>
+    <rect x="40" y="47" width="40" height="6" rx="2" fill="#e5e7eb"/>
+    
+    <!-- Server Rack 3 -->
+    <rect x="10" y="70" width="80" height="20" rx="3" fill="white" opacity="0.9"/>
+    <circle cx="20" cy="80" r="3" fill="#6366f1"/>
+    <circle cx="30" cy="80" r="3" fill="#10b981"/>
+    <rect x="40" y="77" width="40" height="6" rx="2" fill="#e5e7eb"/>
+  </g>
+  
+  <!-- Letter M -->
+  <text x="100" y="170" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="white" text-anchor="middle">M</text>
+</svg>

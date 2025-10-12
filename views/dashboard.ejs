@@ -1,0 +1,143 @@
+<% 
+const body = `
+<!-- Dashboard Hero -->
+<section class="dashboard-hero">
+    <div class="container">
+        <h1>Welcome to Your Dashboard!</h1>
+        <p>Manage your hosting, view your websites, and access all MasterHosting features.</p>
+    </div>
+</section>
+
+<!-- Dashboard Content -->
+<section class="dashboard-section">
+    <div class="container">
+        <div class="dashboard-grid">
+            <!-- User Profile Card -->
+            <div class="dashboard-card profile-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-user-circle"></i> Your Profile</h3>
+                </div>
+                <div class="card-body">
+                    <div class="profile-info">
+                        <% if (user.photo) { %>
+                            <img src="<%= user.photo %>" alt="<%= user.name %>" class="profile-photo">
+                        <% } %>
+                        <h4><%= user.name %></h4>
+                        <p class="profile-email"><i class="fas fa-envelope"></i> <%= user.email %></p>
+                        <% if (user.isWestScrantonMember) { %>
+                            <div class="special-badge">
+                                <i class="fas fa-graduation-cap"></i> West Scranton Member
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hosting Status Card -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-server"></i> Hosting Status</h3>
+                </div>
+                <div class="card-body">
+                    <div class="hosting-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Websites Hosted</span>
+                            <span class="stat-value">0 / 2</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Storage Used</span>
+                            <span class="stat-value">0 MB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Status</span>
+                            <span class="stat-value status-active">Active</span>
+                        </div>
+                    </div>
+                    <p class="info-text">
+                        <i class="fas fa-info-circle"></i> You can host up to 2 websites for free!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                </div>
+                <div class="card-body">
+                    <div class="action-buttons">
+                        <a href="/contact" class="action-btn">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Request Hosting</span>
+                        </a>
+                        <a href="#" class="action-btn" onclick="document.getElementById('chatbotToggle').click(); return false;">
+                            <i class="fas fa-robot"></i>
+                            <span>Ask AI Support</span>
+                        </a>
+                        <a href="/#showcase" class="action-btn">
+                            <i class="fas fa-globe"></i>
+                            <span>View Subdomains</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Websites Card -->
+            <div class="dashboard-card full-width">
+                <div class="card-header">
+                    <h3><i class="fas fa-folder"></i> My Websites</h3>
+                </div>
+                <div class="card-body">
+                    <div class="websites-list">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <h4>No websites yet</h4>
+                            <p>Contact us to request your free hosting and get started!</p>
+                            <a href="/contact" class="btn btn-primary">
+                                <i class="fas fa-envelope"></i> Request Hosting
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Card -->
+            <div class="dashboard-card full-width">
+                <div class="card-header">
+                    <h3><i class="fas fa-life-ring"></i> Need Help?</h3>
+                </div>
+                <div class="card-body">
+                    <div class="support-options">
+                        <div class="support-option">
+                            <i class="fas fa-robot"></i>
+                            <h4>24/7 AI Support</h4>
+                            <p>Get instant answers from our AI chatbot</p>
+                            <button class="btn btn-secondary" onclick="document.getElementById('chatbotToggle').click()">
+                                Chat Now
+                            </button>
+                        </div>
+                        <div class="support-option">
+                            <i class="fas fa-envelope"></i>
+                            <h4>Contact Team</h4>
+                            <p>Send us a message and we'll respond within 24 hours</p>
+                            <a href="/contact" class="btn btn-secondary">
+                                Contact Us
+                            </a>
+                        </div>
+                        <% if (user.isWestScrantonMember) { %>
+                        <div class="support-option special">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h4>Priority Support</h4>
+                            <p>Contact Andy for enhanced features and priority assistance</p>
+                            <span class="badge-premium">Premium Access</span>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+`;
+%>
+<%- include('layout', { title, page, body }) %>

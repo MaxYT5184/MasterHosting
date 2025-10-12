@@ -1,0 +1,150 @@
+<% 
+const body = `
+<!-- Contact Hero -->
+<section class="contact-hero">
+    <div class="container">
+        <h1>Get In Touch</h1>
+        <p>Request your free hosting or ask us anything! We'll respond within 24 hours.</p>
+        <% if (user.isWestScrantonMember) { %>
+            <div class="member-badge">
+                <i class="fas fa-graduation-cap"></i> West Scranton Member - Priority Support
+            </div>
+        <% } %>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section">
+    <div class="container">
+        <div class="contact-grid">
+            <!-- Contact Form -->
+            <div class="contact-form-wrapper">
+                <h2>Send Us a Message</h2>
+                <div class="user-info-display">
+                    <p><strong>Logged in as:</strong> ${user.name}</p>
+                    <p><strong>Email:</strong> ${user.email}</p>
+                </div>
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="message">
+                            <i class="fas fa-comment"></i> Your Message
+                        </label>
+                        <textarea 
+                            id="message" 
+                            name="message" 
+                            rows="8" 
+                            placeholder="Tell us about your hosting needs or ask us anything..." 
+                            required
+                        ></textarea>
+                        <small>Request your free hosting, choose your subdomain, or ask any questions!</small>
+                    </div>
+                    
+                    <!-- Google reCAPTCHA -->
+                    <% if (recaptchaSiteKey) { %>
+                    <div class="form-group">
+                        <div class="g-recaptcha" data-sitekey="<%= recaptchaSiteKey %>"></div>
+                    </div>
+                    <% } %>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                    
+                    <div id="formMessage" class="form-message"></div>
+                </form>
+                
+                <div class="team-signature">
+                    <p><em>- <%= process.env.TEAM_SIGNATURE || 'MasterHosting Team' %></em></p>
+                </div>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="contact-info-wrapper">
+                <h2>Contact Information</h2>
+                <p>Feel free to reach out through any of these channels:</p>
+                
+                <div class="contact-info-cards">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email</h3>
+                        <p>support@masterhostinig.online</p>
+                        <a href="mailto:support@masterhostinig.online">Send Email</a>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Support Hours</h3>
+                        <p>24/7 Available</p>
+                        <span>We're always here to help</span>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3>Website</h3>
+                        <p>masterhostinig.online</p>
+                        <a href="/">Visit Homepage</a>
+                    </div>
+                </div>
+                
+                <div class="social-connect">
+                    <h3>Connect With Us</h3>
+                    <div class="social-buttons">
+                        <a href="#" class="social-btn facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-btn twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-btn instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-btn linkedin">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Quick answers to common questions</p>
+        </div>
+        
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3><i class="fas fa-question-circle"></i> How do I get started?</h3>
+                <p>Simply choose a plan, sign up, and you'll receive instructions to upload your website files. It takes just minutes!</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3><i class="fas fa-question-circle"></i> Can I upgrade my plan later?</h3>
+                <p>Absolutely! You can upgrade or downgrade your plan at any time from your account dashboard.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3><i class="fas fa-question-circle"></i> Is the subdomain really free?</h3>
+                <p>Yes! Every plan includes a free subdomain like yourname.masterhostinig.online at no additional cost.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3><i class="fas fa-question-circle"></i> What payment methods do you accept?</h3>
+                <p>We accept all major credit cards, PayPal, and various other payment methods for your convenience.</p>
+            </div>
+        </div>
+    </div>
+</section>
+`;
+%>
+<%- include('layout', { title, page, body }) %>
