@@ -14,15 +14,15 @@ const body = `
                     Get your own subdomain, reliable hosting, and 24/7 AI support. No credit card required!
                 </p>
                 <div class="hero-buttons">
-                    <% if (!user) { %>
+                    ${!user ? `
                         <a href="/auth/google" class="btn btn-primary btn-lg">
                             <i class="fab fa-google"></i> Login with Google to Start
                         </a>
-                    <% } else { %>
+                    ` : `
                         <a href="/contact" class="btn btn-primary btn-lg">
                             <i class="fas fa-envelope"></i> Request Hosting Now
                         </a>
-                    <% } %>
+                    `}
                     <a href="#how-it-works" class="btn btn-secondary btn-lg">
                         <i class="fas fa-play-circle"></i> Learn More
                     </a>
@@ -274,15 +274,15 @@ const body = `
         <div class="cta-content">
             <h2>Ready to Get Started?</h2>
             <p>Join MasterHosting today and get your website online for FREE!</p>
-            <% if (!user) { %>
+            ${!user ? `
                 <a href="/auth/google" class="btn btn-primary btn-lg">
                     <i class="fab fa-google"></i> Login with Google to Start
                 </a>
-            <% } else { %>
+            ` : `
                 <a href="/contact" class="btn btn-primary btn-lg">
                     <i class="fas fa-envelope"></i> Request Your Free Hosting
                 </a>
-            <% } %>
+            `}
             <p class="cta-note">
                 <i class="fas fa-info-circle"></i> To order hosting, please login and contact us through our contact form.
             </p>

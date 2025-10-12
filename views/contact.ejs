@@ -5,11 +5,11 @@ const body = `
     <div class="container">
         <h1>Get In Touch</h1>
         <p>Request your free hosting or ask us anything! We'll respond within 24 hours.</p>
-        <% if (user.isWestScrantonMember) { %>
+        ${user.isWestScrantonMember ? `
             <div class="member-badge">
                 <i class="fas fa-graduation-cap"></i> West Scranton Member - Priority Support
             </div>
-        <% } %>
+        ` : ''}
     </div>
 </section>
 
@@ -40,11 +40,11 @@ const body = `
                     </div>
                     
                     <!-- Google reCAPTCHA -->
-                    <% if (recaptchaSiteKey) { %>
+                    ${recaptchaSiteKey ? `
                     <div class="form-group">
-                        <div class="g-recaptcha" data-sitekey="<%= recaptchaSiteKey %>"></div>
+                        <div class="g-recaptcha" data-sitekey="${recaptchaSiteKey}"></div>
                     </div>
-                    <% } %>
+                    ` : ''}
                     
                     <button type="submit" class="btn btn-primary btn-lg">
                         <i class="fas fa-paper-plane"></i> Send Message
@@ -54,7 +54,7 @@ const body = `
                 </form>
                 
                 <div class="team-signature">
-                    <p><em>- <%= process.env.TEAM_SIGNATURE || 'MasterHosting Team' %></em></p>
+                    <p><em>- MasterHosting Team</em></p>
                 </div>
             </div>
             
