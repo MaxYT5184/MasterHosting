@@ -59,6 +59,23 @@
                     <li><a href="/contact" class="<%= page === 'contact' ? 'active' : '' %>">Contact</a></li>
                     <li><a href="/updates" class="<%= page === 'updates' ? 'active' : '' %>">Updates</a></li>
                 </ul>
+                
+                <!-- Auth Section -->
+                <div class="auth-section">
+                    <button id="loginBtn" class="btn btn-primary" onclick="signInWithGoogle()">
+                        <i class="fab fa-google"></i> Login
+                    </button>
+                    
+                    <div id="userInfo" class="user-info" style="display: none;">
+                        <img id="userPhoto" src="" alt="User" class="user-photo">
+                        <div class="user-details">
+                            <span id="userName" class="user-name"></span>
+                            <button onclick="signOutUser()" class="btn-logout">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -152,6 +169,9 @@
         </div>
     </footer>
 
+    <!-- Firebase Authentication -->
+    <script type="module" src="/js/firebase-config.js"></script>
+    
     <!-- Custom JavaScript -->
     <script src="/js/main.js"></script>
     

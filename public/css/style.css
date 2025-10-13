@@ -2422,3 +2422,131 @@ body {
         width: 100%;
     }
 }
+
+/* Auth Section */
+.auth-section {
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+}
+
+#loginBtn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg-light);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+}
+
+.user-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+
+.btn-logout {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: opacity 0.3s;
+}
+
+.btn-logout:hover {
+    opacity: 0.7;
+}
+
+/* Notifications */
+.notification {
+    position: fixed;
+    top: -100px;
+    right: 2rem;
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 10001;
+    transition: top 0.3s ease;
+    min-width: 300px;
+}
+
+.notification.show {
+    top: 2rem;
+}
+
+.notification-success {
+    border-left: 4px solid #10b981;
+}
+
+.notification-success i {
+    color: #10b981;
+    font-size: 1.5rem;
+}
+
+.notification-error {
+    border-left: 4px solid #ef4444;
+}
+
+.notification-error i {
+    color: #ef4444;
+    font-size: 1.5rem;
+}
+
+.notification span {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* Mobile Auth */
+@media (max-width: 768px) {
+    .auth-section {
+        margin-left: 0;
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    #loginBtn {
+        width: 100%;
+    }
+    
+    .user-info {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .notification {
+        right: 1rem;
+        left: 1rem;
+        min-width: auto;
+    }
+}
