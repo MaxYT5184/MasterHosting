@@ -87,6 +87,16 @@ app.get('/', (req, res) => {
   });
 });
 
+// Info / About the Creator
+app.get('/info', (req, res) => {
+  res.render('info', { 
+    title: 'About the Creator - MasterHosting',
+    page: 'info',
+    description: 'Learn about Andy T (Max Crafter YT), the high school student behind MasterHosting, providing free hosting with no scams.',
+    keywords: 'Andy T, Max Crafter YT, MasterHosting creator, free hosting, student entrepreneur'
+  });
+});
+
 // Login page
 app.get('/login', (req, res) => {
   res.render('login', { 
