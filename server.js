@@ -101,6 +101,14 @@ app.get('/admin', (req, res) => {
   });
 });
 
+// Profile page
+app.get('/profile', (req, res) => {
+  res.render('profile', { 
+    title: 'My Profile - MasterHosting',
+    page: 'profile'
+  });
+});
+
 // Contact page (protected - requires login)
 app.get('/contact', (req, res) => {
   // Check for auth query parameter - must be exactly 'true' from client-side auth
