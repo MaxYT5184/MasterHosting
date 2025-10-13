@@ -209,7 +209,7 @@ document.getElementById('emailLoginForm').addEventListener('submit', async (e) =
             errorMessage = 'Too many failed attempts. Please try again later.';
         }
         
-        messageEl.innerHTML = \`<div class="error-message"><i class="fas fa-exclamation-circle"></i> \${errorMessage}<br><small>Error code: \${error.code}</small></div>\`;
+        messageEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> ${errorMessage}<br><small>Error code: ${error.code}</small></div>`;
         
         // Send error to server for logging
         fetch('/api/log-error', {
@@ -291,7 +291,7 @@ document.getElementById('emailSignupForm').addEventListener('submit', async (e) 
             errorMessage = 'Email/Password sign-up is not enabled. Please contact support.';
         }
         
-        messageEl.innerHTML = \`<div class="error-message"><i class="fas fa-exclamation-circle"></i> \${errorMessage}<br><small>Error code: \${error.code}</small></div>\`;
+        messageEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> ${errorMessage}<br><small>Error code: ${error.code}</small></div>`;
         
         // Send error to server for logging
         fetch('/api/log-error', {
