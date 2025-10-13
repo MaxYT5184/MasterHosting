@@ -252,10 +252,34 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something went wrong!');
 });
 
+// Keep-alive endpoint for uptime monitoring
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'ok', 
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Self-ping to prevent Render spin-down (every 10 minutes)
+if (process.env.NODE_ENV === 'production') {
+  const https = require('https');
+  const SITE_URL = process.env.SITE_URL || 'https://masterhostinig.online';
+  
+  setInterval(() => {
+    https.get(`${SITE_URL}/health`, (res) => {
+      console.log(`✅ Keep-alive ping - Status: ${res.statusCode}`);
+    }).on('error', (err) => {
+      console.error('❌ Keep-alive ping failed:', err.message);
+    });
+  }, 10 * 60 * 1000); // Every 10 minutes
+}
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 MasterHosting server running on http://localhost:${PORT}`);
   console.log(`📧 Email: ${process.env.EMAIL_USER || 'Not configured'}`);
   console.log(`🔐 reCAPTCHA: ${process.env.RECAPTCHA_SITE_KEY ? 'Configured' : 'Not configured'}`);
   console.log(`💰 AdSense: ${process.env.ADSENSE_CLIENT_ID ? 'Configured' : 'Not configured'}`);
+  console.log(`⏱️  Keep-alive: ${process.env.NODE_ENV === 'production' ? 'Enabled' : 'Disabled (dev mode)'}`);
 });
