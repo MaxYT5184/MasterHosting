@@ -1,0 +1,240 @@
+<% 
+const body = `
+<!-- Login/Signup Page -->
+<section class="auth-page">
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+                <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form-container">
+                <h2>Welcome Back!</h2>
+                <p class="auth-subtitle">Sign in to access your MasterHosting account</p>
+                
+                <form id="emailLoginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input 
+                            type="email" 
+                            id="loginEmail" 
+                            placeholder="Enter your email" 
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input 
+                            type="password" 
+                            id="loginPassword" 
+                            placeholder="Enter your password" 
+                            required
+                        >
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+                
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+                
+                <button onclick="signInWithGoogle()" class="btn btn-google btn-block">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                
+                <div id="loginMessage" class="auth-message"></div>
+            </div>
+            
+            <!-- Signup Form -->
+            <div id="signupForm" class="auth-form-container" style="display: none;">
+                <h2>Create Account</h2>
+                <p class="auth-subtitle">Join MasterHosting and get free website hosting!</p>
+                
+                <form id="emailSignupForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="signupName">
+                            <i class="fas fa-user"></i> Full Name
+                        </label>
+                        <input 
+                            type="text" 
+                            id="signupName" 
+                            placeholder="Enter your full name" 
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupEmail">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input 
+                            type="email" 
+                            id="signupEmail" 
+                            placeholder="Enter your email" 
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupPassword">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input 
+                            type="password" 
+                            id="signupPassword" 
+                            placeholder="Create a password (min 6 characters)" 
+                            required
+                            minlength="6"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupPasswordConfirm">
+                            <i class="fas fa-lock"></i> Confirm Password
+                        </label>
+                        <input 
+                            type="password" 
+                            id="signupPasswordConfirm" 
+                            placeholder="Confirm your password" 
+                            required
+                            minlength="6"
+                        >
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+                
+                <button onclick="signInWithGoogle()" class="btn btn-google btn-block">
+                    <i class="fab fa-google"></i> Sign up with Google
+                </button>
+                
+                <div id="signupMessage" class="auth-message"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="module">
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+const auth = window.firebaseAuth;
+
+// Switch between login and signup tabs
+window.switchTab = function(tab) {
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const tabs = document.querySelectorAll('.auth-tab');
+    
+    tabs.forEach(t => t.classList.remove('active'));
+    
+    if (tab === 'login') {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        tabs[0].classList.add('active');
+    } else {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        tabs[1].classList.add('active');
+    }
+};
+
+// Email/Password Login
+document.getElementById('emailLoginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const messageEl = document.getElementById('loginMessage');
+    
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        messageEl.innerHTML = '<div class="success-message"><i class="fas fa-check-circle"></i> Login successful! Redirecting...</div>';
+        
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1500);
+    } catch (error) {
+        console.error('Login error:', error);
+        let errorMessage = 'Failed to login. Please try again.';
+        
+        if (error.code === 'auth/user-not-found') {
+            errorMessage = 'No account found with this email.';
+        } else if (error.code === 'auth/wrong-password') {
+            errorMessage = 'Incorrect password.';
+        } else if (error.code === 'auth/invalid-email') {
+            errorMessage = 'Invalid email address.';
+        }
+        
+        messageEl.innerHTML = \`<div class="error-message"><i class="fas fa-exclamation-circle"></i> \${errorMessage}</div>\`;
+    }
+});
+
+// Email/Password Signup
+document.getElementById('emailSignupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+    const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+    const messageEl = document.getElementById('signupMessage');
+    
+    // Validate passwords match
+    if (password !== passwordConfirm) {
+        messageEl.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-circle"></i> Passwords do not match!</div>';
+        return;
+    }
+    
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        
+        // Update profile with name
+        await updateProfile(userCredential.user, {
+            displayName: name
+        });
+        
+        messageEl.innerHTML = '<div class="success-message"><i class="fas fa-check-circle"></i> Account created! Redirecting...</div>';
+        
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1500);
+    } catch (error) {
+        console.error('Signup error:', error);
+        let errorMessage = 'Failed to create account. Please try again.';
+        
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = 'An account with this email already exists.';
+        } else if (error.code === 'auth/weak-password') {
+            errorMessage = 'Password is too weak. Use at least 6 characters.';
+        } else if (error.code === 'auth/invalid-email') {
+            errorMessage = 'Invalid email address.';
+        }
+        
+        messageEl.innerHTML = \`<div class="error-message"><i class="fas fa-exclamation-circle"></i> \${errorMessage}</div>\`;
+    }
+});
+
+// Redirect if already logged in
+if (auth.currentUser) {
+    window.location.href = '/';
+}
+</script>
+`;
+%>
+<%- include('layout', { title: 'Login - MasterHosting', page: 'login', body }) %>

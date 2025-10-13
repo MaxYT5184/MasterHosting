@@ -1,7 +1,29 @@
 <% 
 const body = `
+<!-- Auth Check -->
+<div id="authCheck" style="display: none;">
+    <section class="auth-required">
+        <div class="container">
+            <div class="auth-required-content">
+                <i class="fas fa-lock"></i>
+                <h2>Login Required</h2>
+                <p>You must be logged in to use the contact form.</p>
+                <p class="help-text">Can't log in? Ask our AI support chatbot for help!</p>
+                <div class="auth-actions">
+                    <a href="/login" class="btn btn-primary btn-lg">
+                        <i class="fas fa-sign-in-alt"></i> Login / Sign Up
+                    </a>
+                    <button onclick="toggleChatbot()" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-robot"></i> Ask AI Support
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
 <!-- Contact Hero -->
-<section class="contact-hero">
+<section class="contact-hero" id="contactContent">
     <div class="container">
         <h1>Get In Touch</h1>
         <p>Request your free hosting or ask us anything! We'll respond within 24 hours.</p>
@@ -225,6 +247,30 @@ const body = `
         </div>
     </div>
 </section>
+
+<script type="module">
+// Check if user is logged in
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+const auth = window.firebaseAuth;
+const authCheck = document.getElementById('authCheck');
+const contactContent = document.getElementById('contactContent');
+
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        // User is NOT logged in - show auth required message
+        authCheck.style.display = 'block';
+        contactContent.style.display = 'none';
+        document.querySelector('.contact-info-section').style.display = 'none';
+        document.querySelector('.contact-section').style.display = 'none';
+        document.querySelector('.faq-section').style.display = 'none';
+    } else {
+        // User IS logged in - show contact form
+        authCheck.style.display = 'none';
+        contactContent.style.display = 'block';
+    }
+});
+</script>
 `;
 %>
 <%- include('layout', { title, page, body }) %>

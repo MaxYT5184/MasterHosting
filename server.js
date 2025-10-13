@@ -54,11 +54,21 @@ app.get('/', (req, res) => {
   });
 });
 
-// Contact page (no login required)
+// Login page
+app.get('/login', (req, res) => {
+  res.render('login', { 
+    title: 'Login - MasterHosting',
+    page: 'login'
+  });
+});
+
+// Contact page (protected - requires login)
 app.get('/contact', (req, res) => {
   res.render('contact', { 
     title: 'Contact Us - MasterHosting',
-    page: 'contact'
+    page: 'contact',
+    recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || '',
+    requireAuth: true
   });
 });
 
