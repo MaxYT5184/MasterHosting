@@ -56,17 +56,48 @@ function updateAuthUI(user) {
   
   if (user) {
     // User is signed in
-    if (loginBtn) loginBtn.style.display = 'none';
+    console.log('🎨 Updating UI for user:', user.email);
+    
+    if (loginBtn) {
+      loginBtn.style.display = 'none';
+      console.log('✅ Login button hidden');
+    }
+    
     if (userInfo) {
       userInfo.style.display = 'flex';
-      if (userName) userName.textContent = user.displayName;
-      if (userEmail) userEmail.textContent = user.email;
-      if (userPhoto) userPhoto.src = user.photoURL;
+      
+      if (userName) {
+        userName.textContent = user.displayName || user.email.split('@')[0];
+      }
+      
+      if (userEmail) {
+        userEmail.textContent = user.email;
+      }
+      
+      if (userPhoto) {
+        // Use photo URL if available, otherwise use default avatar
+        if (user.photoURL) {
+          userPhoto.src = user.photoURL;
+        } else {
+          // Create avatar with first letter of name/email
+          const firstLetter = (user.displayName || user.email)[0].toUpperCase();
+          userPhoto.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=667eea&color=fff&size=128`;
+        }
+      }
+      
+      console.log('✅ User info displayed');
     }
   } else {
     // User is signed out
-    if (loginBtn) loginBtn.style.display = 'block';
-    if (userInfo) userInfo.style.display = 'none';
+    console.log('🚪 User signed out - showing login button');
+    
+    if (loginBtn) {
+      loginBtn.style.display = 'block';
+    }
+    
+    if (userInfo) {
+      userInfo.style.display = 'none';
+    }
   }
 }
 

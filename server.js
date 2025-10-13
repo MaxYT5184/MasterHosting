@@ -205,6 +205,21 @@ app.post('/contact', async (req, res) => {
   }
 });
 
+// Error logging endpoint
+app.post('/api/log-error', (req, res) => {
+  const { type, error, message, email } = req.body;
+  
+  console.error('🔥 Firebase Auth Error:');
+  console.error('  Type:', type);
+  console.error('  Error Code:', error);
+  console.error('  Message:', message);
+  console.error('  Email:', email);
+  console.error('  Timestamp:', new Date().toISOString());
+  console.error('---');
+  
+  res.json({ success: true });
+});
+
 // AI Chatbot endpoint
 app.post('/api/chat', (req, res) => {
   const { message } = req.body;
