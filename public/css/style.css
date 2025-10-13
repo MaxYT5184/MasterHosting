@@ -2761,3 +2761,21 @@ body {
         width: 100%;
     }
 }
+
+/* Disabled button state */
+.btn:disabled,
+.btn-primary:disabled,
+.btn-block:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -157,12 +157,26 @@ window.switchTab = function(tab) {
 };
 
 // Email/Password Login
+let isLoggingIn = false;
 document.getElementById('emailLoginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    
+    // Prevent multiple submissions
+    if (isLoggingIn) {
+        console.log('⚠️ Login already in progress, ignoring...');
+        return;
+    }
+    
+    isLoggingIn = true;
     
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
     const messageEl = document.getElementById('loginMessage');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    
+    // Disable button
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
     
     try {
         console.log('🔐 Attempting login for:', email);
@@ -175,6 +189,9 @@ document.getElementById('emailLoginForm').addEventListener('submit', async (e) =
             window.location.href = '/';
         }, 1500);
     } catch (error) {
+        isLoggingIn = false;
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
         console.error('❌ Login error:', error.code, error.message);
         console.error('Full error:', JSON.stringify(error, null, 2));
         
@@ -209,20 +226,35 @@ document.getElementById('emailLoginForm').addEventListener('submit', async (e) =
 });
 
 // Email/Password Signup
+let isSigningUp = false;
 document.getElementById('emailSignupForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    
+    // Prevent multiple submissions
+    if (isSigningUp) {
+        console.log('⚠️ Signup already in progress, ignoring...');
+        return;
+    }
+    
+    isSigningUp = true;
     
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
     const password = document.getElementById('signupPassword').value;
     const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
     const messageEl = document.getElementById('signupMessage');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
     
     // Validate passwords match
     if (password !== passwordConfirm) {
         messageEl.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-circle"></i> Passwords do not match!</div>';
+        isSigningUp = false;
         return;
     }
+    
+    // Disable button
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
     
     try {
         console.log('📝 Attempting signup for:', email);
@@ -241,6 +273,9 @@ document.getElementById('emailSignupForm').addEventListener('submit', async (e) 
             window.location.href = '/';
         }, 1500);
     } catch (error) {
+        isSigningUp = false;
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
         console.error('❌ Signup error:', error.code, error.message);
         console.error('Full error:', JSON.stringify(error, null, 2));
         
