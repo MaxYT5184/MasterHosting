@@ -14,17 +14,55 @@ app.use(helmet({
   contentSecurityPolicy: false // Allow external scripts (AdSense, reCAPTCHA)
 }));
 
-// Rate limiting
+// Rate limiting with detailed logging
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 500, // limit each IP to 500 requests per windowMs (increased for monitoring services)
+  
+  // Log every request
+  onLimitReached: (req, res, options) => {
+    console.error('🚨 RATE LIMIT REACHED!');
+    console.error('  IP:', req.ip);
+    console.error('  Path:', req.path);
+    console.error('  Method:', req.method);
+    console.error('  User-Agent:', req.get('user-agent'));
+    console.error('  Time:', new Date().toISOString());
+    console.error('  Limit:', options.max, 'requests per', options.windowMs / 60000, 'minutes');
+    console.error('---');
+  },
+  
+  // Custom handler
   handler: (req, res) => {
+    console.error('🚫 429 ERROR - Too Many Requests');
+    console.error('  IP:', req.ip);
+    console.error('  Path:', req.path);
+    console.error('  Method:', req.method);
+    console.error('  User-Agent:', req.get('user-agent'));
+    console.error('  Time:', new Date().toISOString());
+    console.error('---');
+    
     res.status(429).render('error-429', {
       title: '429 - Too Many Requests',
       page: 'error'
     });
+  },
+  
+  // Skip rate limiting for health checks
+  skip: (req) => {
+    const isHealthCheck = req.path === '/health';
+    if (isHealthCheck) {
+      console.log('✅ Skipping rate limit for health check');
+    }
+    return isHealthCheck;
   }
 });
+
+// Log all requests to track patterns
+app.use((req, res, next) => {
+  console.log(`📊 ${req.method} ${req.path} - IP: ${req.ip}`);
+  next();
+});
+
 app.use(limiter);
 
 // Middleware
@@ -283,10 +321,22 @@ app.use((err, req, res, next) => {
 
 // Keep-alive endpoint for uptime monitoring
 app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'ok', 
+  res.status(200).json({
+    status: 'ok',
     uptime: process.uptime(),
     timestamp: new Date().toISOString()
+  });
+});
+
+// Rate limit status endpoint (for debugging)
+app.get('/api/rate-limit-status', (req, res) => {
+  res.json({
+    ip: req.ip,
+    rateLimit: {
+      limit: 500,
+      windowMinutes: 15,
+      message: 'Check server logs for detailed rate limit information'
+    }
   });
 });
 
