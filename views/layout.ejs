@@ -3,8 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MasterHosting - Free website hosting with custom subdomains. Host 1-2 websites absolutely free!">
-    <meta name="keywords" content="free web hosting, subdomain, free hosting, website hosting">
+    <meta name="description" content="<%= typeof description !== 'undefined' ? description : 'MasterHosting - Free website hosting with custom subdomains. Host 1-2 websites absolutely free with 24/7 support!' %>">
+    <meta name="keywords" content="<%= typeof keywords !== 'undefined' ? keywords : 'free web hosting, subdomain, free hosting, website hosting, free domain, web hosting service' %>">
+    <meta name="author" content="MasterHosting">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://masterhostinig.online/">
+    <meta property="og:title" content="<%= title %>">
+    <meta property="og:description" content="<%= typeof description !== 'undefined' ? description : 'MasterHosting - Free website hosting with custom subdomains. Host 1-2 websites absolutely free!' %>">
+    <meta property="og:image" content="https://masterhostinig.online/favicon.svg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://masterhostinig.online/">
+    <meta property="twitter:title" content="<%= title %>">
+    <meta property="twitter:description" content="<%= typeof description !== 'undefined' ? description : 'MasterHosting - Free website hosting with custom subdomains. Host 1-2 websites absolutely free!' %>">
+    <meta property="twitter:image" content="https://masterhostinig.online/favicon.svg">
     
     <!-- Google AdSense Verification -->
     <meta name="google-adsense-account" content="ca-pub-330927364569464">

@@ -81,7 +81,9 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.render('index', { 
     title: 'MasterHosting - Free Website Hosting',
-    page: 'home'
+    page: 'home',
+    description: 'Get free website hosting with custom subdomains! Host 1-2 websites absolutely free with 24/7 support, 99.9% uptime, and easy setup. Start hosting today!',
+    keywords: 'free web hosting, free website hosting, custom subdomain, free domain hosting, website hosting free, free hosting service, web hosting'
   });
 });
 
@@ -89,7 +91,9 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
   res.render('login', { 
     title: 'Login - MasterHosting',
-    page: 'login'
+    page: 'login',
+    description: 'Login to your MasterHosting account to manage your free websites, access hosting dashboard, and control your custom subdomains.',
+    keywords: 'login, sign in, account login, hosting login, website management, dashboard access'
   });
 });
 
@@ -97,7 +101,9 @@ app.get('/login', (req, res) => {
 app.get('/admin', (req, res) => {
   res.render('admin', { 
     title: 'Admin Dashboard - MasterHosting',
-    page: 'admin'
+    page: 'admin',
+    description: 'MasterHosting admin dashboard - Manage users, monitor hosting services, and control platform settings.',
+    keywords: 'admin dashboard, user management, hosting admin, platform control'
   });
 });
 
@@ -105,7 +111,9 @@ app.get('/admin', (req, res) => {
 app.get('/profile', (req, res) => {
   res.render('profile', { 
     title: 'My Profile - MasterHosting',
-    page: 'profile'
+    page: 'profile',
+    description: 'View and manage your MasterHosting profile, account settings, and hosting information.',
+    keywords: 'user profile, account settings, profile management, hosting account'
   });
 });
 
@@ -119,7 +127,9 @@ app.get('/contact', (req, res) => {
     page: 'contact',
     recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || '',
     requireAuth: true,
-    isAuthenticated: isAuthenticated
+    isAuthenticated: isAuthenticated,
+    description: 'Contact MasterHosting support team for hosting questions, technical support, or general inquiries. We\'re here to help 24/7!',
+    keywords: 'contact support, hosting support, customer service, technical support, help desk, contact us'
   });
 });
 
@@ -127,7 +137,9 @@ app.get('/contact', (req, res) => {
 app.get('/privacy', (req, res) => {
   res.render('privacy', { 
     title: 'Privacy Policy - MasterHosting',
-    page: 'privacy'
+    page: 'privacy',
+    description: 'MasterHosting Privacy Policy - Learn how we protect your data, handle user information, and ensure privacy in our hosting services.',
+    keywords: 'privacy policy, data protection, user privacy, data security, privacy terms'
   });
 });
 
@@ -135,7 +147,9 @@ app.get('/privacy', (req, res) => {
 app.get('/terms', (req, res) => {
   res.render('terms', { 
     title: 'Terms of Service - MasterHosting',
-    page: 'terms'
+    page: 'terms',
+    description: 'Read MasterHosting Terms of Service - Understand our hosting policies, user agreements, and service terms for free website hosting.',
+    keywords: 'terms of service, user agreement, hosting terms, service policy, legal terms'
   });
 });
 
@@ -143,15 +157,19 @@ app.get('/terms', (req, res) => {
 app.get('/about', (req, res) => {
   res.render('about', { 
     title: 'About Us - MasterHosting',
-    page: 'about'
+    page: 'about',
+    description: 'Learn about MasterHosting - Your trusted free website hosting provider. Discover our mission, features, and commitment to providing quality hosting services.',
+    keywords: 'about us, hosting company, free hosting provider, web hosting service, company information'
   });
 });
 
 // Update Log page
 app.get('/updates', (req, res) => {
   res.render('updates', { 
-    title: 'Update Log - MasterHosting',
-    page: 'updates'
+    title: 'Latest Updates - MasterHosting',
+    page: 'updates',
+    description: 'Stay updated with the latest MasterHosting news, features, improvements, and announcements. Check out our changelog and new releases.',
+    keywords: 'updates, changelog, news, announcements, new features, hosting updates, platform news'
   });
 });
 
@@ -165,6 +183,12 @@ app.get('/ads.txt', (req, res) => {
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain');
   res.sendFile(path.join(__dirname, 'public', 'robots.txt'));
+});
+
+// Serve sitemap.xml file
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.sendFile(path.join(__dirname, 'public', 'sitemap.xml'));
 });
 
 // ==================== API ROUTES ====================
