@@ -1,14 +1,15 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" style="stop-color:#0033ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0088ff;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
     </linearGradient>
   </defs>
   
-  <!-- M shape with gradient -->
-  <path d="M 120 120 L 200 120 L 256 220 L 312 120 L 392 120 L 392 392 L 312 392 L 312 240 L 256 340 L 200 240 L 200 392 L 120 392 Z" fill="url(#gradient)"/>
+  <!-- Large M shape -->
+  <path d="M 237 227 L 337 227 L 337 797 L 237 797 Z M 337 227 L 437 227 L 512 447 L 587 227 L 687 227 L 687 797 L 587 797 L 587 447 L 512 667 L 437 447 L 437 797 L 337 797 Z M 687 227 L 787 227 L 787 797 L 687 797 Z" fill="url(#blueGradient)"/>
   
-  <!-- X shape overlay -->
-  <path d="M 190 280 L 256 360 L 322 280 L 256 200 Z" fill="url(#gradient)" opacity="0.8"/>
+  <!-- X overlay in the middle -->
+  <path d="M 387 447 L 462 512 L 387 577 L 437 627 L 512 552 L 587 627 L 637 577 L 562 512 L 637 447 L 587 397 L 512 472 L 437 397 Z" fill="url(#blueGradient)"/>
 </svg>
