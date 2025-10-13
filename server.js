@@ -64,11 +64,15 @@ app.get('/login', (req, res) => {
 
 // Contact page (protected - requires login)
 app.get('/contact', (req, res) => {
+  // Check for auth query parameter - must be exactly 'true' from client-side auth
+  const isAuthenticated = req.query.auth === 'true';
+  
   res.render('contact', { 
     title: 'Contact Us - MasterHosting',
     page: 'contact',
     recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || '',
-    requireAuth: true
+    requireAuth: true,
+    isAuthenticated: isAuthenticated
   });
 });
 

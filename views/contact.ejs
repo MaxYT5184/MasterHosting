@@ -249,27 +249,50 @@ const body = `
 </section>
 
 <script type="module">
-// Check if user is logged in
+// Check if user is logged in and redirect with proper auth parameter
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
 const auth = window.firebaseAuth;
 const authCheck = document.getElementById('authCheck');
 const contactContent = document.getElementById('contactContent');
 
+// Get current URL params
+const urlParams = new URLSearchParams(window.location.search);
+const authParam = urlParams.get('auth');
+
 onAuthStateChanged(auth, (user) => {
     if (!user) {
-        // User is NOT logged in - show auth required message
-        authCheck.style.display = 'block';
-        contactContent.style.display = 'none';
-        document.querySelector('.contact-info-section').style.display = 'none';
-        document.querySelector('.contact-section').style.display = 'none';
-        document.querySelector('.faq-section').style.display = 'none';
+        // User is NOT logged in - redirect to login
+        window.location.href = '/login';
     } else {
-        // User IS logged in - show contact form
-        authCheck.style.display = 'none';
-        contactContent.style.display = 'block';
+        // User IS logged in
+        // Check if auth parameter is correct
+        if (authParam !== 'true') {
+            // Redirect with proper auth parameter
+            window.location.href = '/contact?auth=true';
+        } else {
+            // Show contact form
+            authCheck.style.display = 'none';
+            contactContent.style.display = 'block';
+        }
     }
 });
+
+// Prevent manual URL manipulation
+window.addEventListener('popstate', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const authParam = urlParams.get('auth');
+    
+    if (authParam === 'true' && !auth.currentUser) {
+        // User tried to manually set auth=true without being logged in
+        window.location.href = '/login';
+    }
+});
+
+// Check on page load
+if (authParam === 'true' && !auth.currentUser) {
+    window.location.href = '/login';
+}
 </script>
 `;
 %>
