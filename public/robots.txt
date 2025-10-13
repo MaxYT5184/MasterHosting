@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /contact
+Allow: /privacy
+Allow: /terms
+Allow: /updates
+Allow: /ads.txt
+
+Sitemap: https://masterhostinig.online/sitemap.xml
+
+# Allow AdSense crawler
+User-agent: Mediapartners-Google
+Allow: /
+
+# Allow Google crawler
+User-agent: Googlebot
+Allow: /

@@ -72,12 +72,32 @@ app.get('/terms', (req, res) => {
   });
 });
 
+// About page
+app.get('/about', (req, res) => {
+  res.render('about', { 
+    title: 'About Us - MasterHosting',
+    page: 'about'
+  });
+});
+
 // Update Log page
 app.get('/updates', (req, res) => {
   res.render('updates', { 
     title: 'Update Log - MasterHosting',
     page: 'updates'
   });
+});
+
+// Serve ads.txt file
+app.get('/ads.txt', (req, res) => {
+  res.type('text/plain');
+  res.sendFile(path.join(__dirname, 'public', 'ads.txt'));
+});
+
+// Serve robots.txt file
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.sendFile(path.join(__dirname, 'public', 'robots.txt'));
 });
 
 // ==================== API ROUTES ====================
