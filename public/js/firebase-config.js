@@ -22,6 +22,9 @@ const auth = getAuth(app);
 // Export for use in other files
 window.firebaseAuth = auth;
 
+console.log('🔥 Firebase initialized');
+console.log('🔐 Auth configured:', auth.app.name);
+
 // Sign Out Function
 window.signOutUser = async function() {
   try {

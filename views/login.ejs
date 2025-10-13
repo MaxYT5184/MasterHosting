@@ -3,6 +3,9 @@ const body = `
 <!-- Login/Signup Page -->
 <section class="auth-page">
     <div class="container">
+        <!-- reCAPTCHA container (required by Firebase) -->
+        <div id="recaptcha-container" style="display: none;"></div>
+        
         <div class="auth-container">
             <div class="auth-tabs">
                 <button class="auth-tab active" onclick="switchTab('login')">Login</button>
@@ -115,9 +118,24 @@ const body = `
 </section>
 
 <script type="module">
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, RecaptchaVerifier } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-const auth = window.firebaseAuth;
+// Wait for Firebase to be ready
+function waitForAuth() {
+    return new Promise((resolve) => {
+        const check = () => {
+            if (window.firebaseAuth) {
+                resolve(window.firebaseAuth);
+            } else {
+                setTimeout(check, 100);
+            }
+        };
+        check();
+    });
+}
+
+const auth = await waitForAuth();
+console.log('🔥 Firebase Auth ready for login page');
 
 // Switch between login and signup tabs
 window.switchTab = function(tab) {
