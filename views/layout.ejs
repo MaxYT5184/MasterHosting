@@ -48,6 +48,108 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    
+    <!-- Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "MasterHosting",
+      "alternateName": "MasterHosting - Free Website Hosting",
+      "url": "https://masterhostinig.online/",
+      "description": "Free website hosting with custom subdomains. Host 1-2 websites absolutely free with 24/7 support, 99.9% uptime, and easy setup.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://masterhostinig.online/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "MasterHosting",
+      "url": "https://masterhostinig.online/",
+      "logo": "https://masterhostinig.online/favicon.svg",
+      "description": "Free website hosting provider offering custom subdomains and reliable hosting services.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "support@masterhostinig.online",
+        "contactType": "Customer Support",
+        "availableLanguage": "English"
+      },
+      "sameAs": [
+        "https://www.youtube.com/@max-yt2025"
+      ]
+    }
+    </script>
+    
+    <% if (page === 'home') { %>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "SiteNavigationElement",
+          "position": 1,
+          "name": "About Us",
+          "description": "Learn about MasterHosting and our free hosting services",
+          "url": "https://masterhostinig.online/about"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 2,
+          "name": "Contact",
+          "description": "Get in touch with our support team",
+          "url": "https://masterhostinig.online/contact"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 3,
+          "name": "Updates",
+          "description": "Latest news and features from MasterHosting",
+          "url": "https://masterhostinig.online/updates"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 4,
+          "name": "Login",
+          "description": "Access your hosting dashboard",
+          "url": "https://masterhostinig.online/login"
+        }
+      ]
+    }
+    </script>
+    <% } %>
+    
+    <% if (page !== 'home') { %>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://masterhostinig.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "<%= title.split(' - ')[0] %>",
+          "item": "https://masterhostinig.online/<%= page %>"
+        }
+      ]
+    }
+    </script>
+    <% } %>
 </head>
 <body>
     <!-- AMP Auto Ads -->
