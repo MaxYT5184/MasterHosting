@@ -2155,3 +2155,55 @@ body {
         padding: 2rem 1.5rem;
     }
 }
+
+/* Contact Info Section */
+.contact-info-section {
+    padding: 3rem 0;
+    background: var(--bg-white);
+}
+
+.info-text {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.info-text h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.info-text h3 {
+    color: var(--text-dark);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.info-text p {
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+}
+
+.info-text ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.info-text ul li {
+    padding: 0.75rem 0;
+    padding-left: 2rem;
+    position: relative;
+    line-height: 1.6;
+}
+
+.info-text ul li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
