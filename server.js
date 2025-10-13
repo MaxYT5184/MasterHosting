@@ -17,7 +17,13 @@ app.use(helmet({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
+  handler: (req, res) => {
+    res.status(429).render('error-429', {
+      title: '429 - Too Many Requests',
+      page: 'error'
+    });
+  }
 });
 app.use(limiter);
 
@@ -226,10 +232,24 @@ app.post('/api/chat', (req, res) => {
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).render('404', { 
+  res.status(404).render('error-404', { 
     title: '404 - Page Not Found',
-    page: '404'
+    page: 'error'
   });
+});
+
+// Error handler for rate limiting
+app.use((err, req, res, next) => {
+  if (err.status === 429) {
+    return res.status(429).render('error-429', {
+      title: '429 - Too Many Requests',
+      page: 'error'
+    });
+  }
+  
+  // Generic error handler
+  console.error('Error:', err);
+  res.status(500).send('Something went wrong!');
 });
 
 // Start server
