@@ -148,6 +148,22 @@ app.get('/contact', (req, res) => {
   });
 });
 
+// Privacy Policy page
+app.get('/privacy', (req, res) => {
+  res.render('privacy', { 
+    title: 'Privacy Policy - MasterHosting',
+    page: 'privacy'
+  });
+});
+
+// Terms of Service page
+app.get('/terms', (req, res) => {
+  res.render('terms', { 
+    title: 'Terms of Service - MasterHosting',
+    page: 'terms'
+  });
+});
+
 // ==================== API ROUTES ====================
 
 // Contact form submission (requires login + reCAPTCHA)
