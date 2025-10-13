@@ -1,0 +1,131 @@
+<% 
+const body = `
+<!-- Updates Hero -->
+<section class="updates-hero">
+    <div class="container">
+        <h1>📢 Update Log</h1>
+        <p>See what's new with MasterHosting</p>
+    </div>
+</section>
+
+<!-- Updates Section -->
+<section class="updates-section">
+    <div class="container">
+        <div class="updates-timeline">
+            
+            <!-- Update: Removed OAuth -->
+            <div class="update-card latest">
+                <div class="update-badge">LATEST</div>
+                <div class="update-header">
+                    <h2>🔓 Simplified Access - No Login Required!</h2>
+                    <span class="update-date">October 12, 2025</span>
+                    <span class="update-version">v2.1</span>
+                </div>
+                <div class="update-content">
+                    <h3>What's New:</h3>
+                    <ul>
+                        <li>✅ <strong>Removed Google Login</strong> - No more authentication needed!</li>
+                        <li>✅ <strong>Direct Contact Form</strong> - Just fill in your name and email</li>
+                        <li>✅ <strong>Faster Access</strong> - Get started immediately without signing in</li>
+                        <li>✅ <strong>Simplified Experience</strong> - Easier for everyone to use</li>
+                    </ul>
+                    <h3>Why This Change?</h3>
+                    <p>We heard your feedback! Many users found the login process unnecessary for requesting free hosting. Now you can contact us directly without any barriers. Just visit our Contact page, fill in your details, and send us a message!</p>
+                    <div class="update-cta">
+                        <a href="/contact" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i> Contact Us Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Update: V2.0 Launch -->
+            <div class="update-card">
+                <div class="update-header">
+                    <h2>🎉 MasterHosting V2.0 - Major Upgrade!</h2>
+                    <span class="update-date">October 12, 2025</span>
+                    <span class="update-version">v2.0</span>
+                </div>
+                <div class="update-content">
+                    <h3>New Features:</h3>
+                    <ul>
+                        <li>🆓 <strong>100% FREE Hosting</strong> - Removed all paid plans!</li>
+                        <li>🤖 <strong>AI Chatbot</strong> - 24/7 support with instant responses</li>
+                        <li>🛡️ <strong>Google reCAPTCHA</strong> - Spam protection on contact form</li>
+                        <li>💰 <strong>Google AdSense</strong> - Monetization integration</li>
+                        <li>📧 <strong>Gmail Integration</strong> - Direct email notifications</li>
+                        <li>📄 <strong>Legal Pages</strong> - Terms of Service & Privacy Policy</li>
+                        <li>🎓 <strong>West Scranton Access</strong> - Special features for members</li>
+                    </ul>
+                    <h3>Improvements:</h3>
+                    <ul>
+                        <li>⚡ Faster page loading</li>
+                        <li>🎨 Modern UI design</li>
+                        <li>📱 Better mobile experience</li>
+                        <li>🔒 Enhanced security</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Update: Initial Launch -->
+            <div class="update-card">
+                <div class="update-header">
+                    <h2>🚀 MasterHosting Launch</h2>
+                    <span class="update-date">October 2025</span>
+                    <span class="update-version">v1.0</span>
+                </div>
+                <div class="update-content">
+                    <h3>Initial Features:</h3>
+                    <ul>
+                        <li>🌐 Free subdomain hosting</li>
+                        <li>📧 Contact form</li>
+                        <li>💼 Professional website design</li>
+                        <li>📱 Mobile responsive</li>
+                        <li>⚡ Fast and reliable hosting</li>
+                    </ul>
+                    <p>MasterHosting was born with a simple mission: provide free, reliable website hosting for everyone!</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Coming Soon Section -->
+        <div class="coming-soon-section">
+            <h2>🔮 Coming Soon</h2>
+            <div class="coming-soon-grid">
+                <div class="coming-soon-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Track your website's performance</p>
+                </div>
+                <div class="coming-soon-card">
+                    <i class="fas fa-upload"></i>
+                    <h3>File Manager</h3>
+                    <p>Upload and manage files easily</p>
+                </div>
+                <div class="coming-soon-card">
+                    <i class="fas fa-database"></i>
+                    <h3>Database Support</h3>
+                    <p>MySQL databases for your apps</p>
+                </div>
+                <div class="coming-soon-card">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <h3>Email Hosting</h3>
+                    <p>Professional email addresses</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscribe to Updates -->
+        <div class="subscribe-section">
+            <h2>📬 Stay Updated</h2>
+            <p>Want to be notified about new features and updates?</p>
+            <a href="/contact" class="btn btn-primary btn-lg">
+                <i class="fas fa-bell"></i> Contact Us to Subscribe
+            </a>
+        </div>
+    </div>
+</section>
+`;
+%>
+<%- include('layout', { title: 'Update Log - MasterHosting', page: 'updates', body }) %>

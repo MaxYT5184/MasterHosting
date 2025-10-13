@@ -51,44 +51,12 @@
                     <li><a href="/#how-it-works" class="<%= page === 'how-it-works' ? 'active' : '' %>">How It Works</a></li>
                     <li><a href="/#showcase" class="<%= page === 'showcase' ? 'active' : '' %>">Showcase</a></li>
                     <li><a href="/contact" class="<%= page === 'contact' ? 'active' : '' %>">Contact</a></li>
-                    <% if (user) { %>
-                        <li><a href="/dashboard" class="<%= page === 'dashboard' ? 'active' : '' %>">Dashboard</a></li>
-                        <li class="user-menu">
-                            <div class="user-info">
-                                <% if (user.photo) { %>
-                                    <img src="<%= user.photo %>" alt="<%= user.name %>" class="user-avatar">
-                                <% } %>
-                                <span class="user-name"><%= user.firstName || user.name %></span>
-                            </div>
-                        </li>
-                        <li><a href="/logout" class="btn btn-secondary">Logout</a></li>
-                    <% } else { %>
-                        <li><a href="/auth/google" class="btn btn-primary">
-                            <i class="fab fa-google"></i> Login with Google
-                        </a></li>
-                    <% } %>
+                    <li><a href="/updates" class="<%= page === 'updates' ? 'active' : '' %>">Updates</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Welcome Banner (for logged-in users) -->
-    <% if (user) { %>
-    <div class="welcome-banner">
-        <div class="container">
-            <div class="welcome-content">
-                <h2>Welcome, <%= user.firstName || user.name %>! 👋</h2>
-                <p>
-                    <% if (user.isWestScrantonMember) { %>
-                        <span class="badge-special">🎓 West Scranton Member - Premium Access</span>
-                    <% } else { %>
-                        You're logged in and ready to host your websites!
-                    <% } %>
-                </p>
-            </div>
-        </div>
-    </div>
-    <% } %>
 
     <!-- Main Content -->
     <main>
@@ -129,12 +97,11 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h3>MasterHosting</h3>
-                    <p>Professional website hosting with free subdomains. Fast, reliable, and affordable.</p>
+                    <p>100% FREE website hosting with free subdomains. Fast, reliable, and always free!</p>
                     <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://youtube.com/@MaxCrafterYT" target="_blank" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </a>
                     </div>
                 </div>
                 
@@ -143,8 +110,8 @@
                     <ul>
                         <li><a href="/">Home</a></li>
                         <li><a href="/#how-it-works">How It Works</a></li>
-                        <li><a href="/#showcase">Showcase</a></li>
-                        <li><a href="/#pricing">Pricing</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/updates">Updates</a></li>
                     </ul>
                 </div>
                 
