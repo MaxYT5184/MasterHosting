@@ -93,6 +93,14 @@ app.get('/login', (req, res) => {
   });
 });
 
+// Admin Dashboard
+app.get('/admin', (req, res) => {
+  res.render('admin', { 
+    title: 'Admin Dashboard - MasterHosting',
+    page: 'admin'
+  });
+});
+
 // Contact page (protected - requires login)
 app.get('/contact', (req, res) => {
   // Check for auth query parameter - must be exactly 'true' from client-side auth
