@@ -1,36 +1,14 @@
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background Circle -->
-  <circle cx="100" cy="100" r="95" fill="url(#gradient)" />
-  
-  <!-- Gradient Definition -->
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#818cf8;stop-opacity:1" />
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0033ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
     </linearGradient>
   </defs>
   
-  <!-- Server Icon -->
-  <g transform="translate(50, 50)">
-    <!-- Server Rack 1 -->
-    <rect x="10" y="10" width="80" height="20" rx="3" fill="white" opacity="0.9"/>
-    <circle cx="20" cy="20" r="3" fill="#6366f1"/>
-    <circle cx="30" cy="20" r="3" fill="#10b981"/>
-    <rect x="40" y="17" width="40" height="6" rx="2" fill="#e5e7eb"/>
-    
-    <!-- Server Rack 2 -->
-    <rect x="10" y="40" width="80" height="20" rx="3" fill="white" opacity="0.9"/>
-    <circle cx="20" cy="50" r="3" fill="#6366f1"/>
-    <circle cx="30" cy="50" r="3" fill="#10b981"/>
-    <rect x="40" y="47" width="40" height="6" rx="2" fill="#e5e7eb"/>
-    
-    <!-- Server Rack 3 -->
-    <rect x="10" y="70" width="80" height="20" rx="3" fill="white" opacity="0.9"/>
-    <circle cx="20" cy="80" r="3" fill="#6366f1"/>
-    <circle cx="30" cy="80" r="3" fill="#10b981"/>
-    <rect x="40" y="77" width="40" height="6" rx="2" fill="#e5e7eb"/>
-  </g>
+  <!-- M shape with gradient -->
+  <path d="M 120 120 L 200 120 L 256 220 L 312 120 L 392 120 L 392 392 L 312 392 L 312 240 L 256 340 L 200 240 L 200 392 L 120 392 Z" fill="url(#gradient)"/>
   
-  <!-- Letter M -->
-  <text x="100" y="170" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="white" text-anchor="middle">M</text>
+  <!-- X shape overlay -->
+  <path d="M 190 280 L 256 360 L 322 280 L 256 200 Z" fill="url(#gradient)" opacity="0.8"/>
 </svg>
