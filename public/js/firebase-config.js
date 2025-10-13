@@ -33,7 +33,7 @@ window.signInWithGoogle = async function() {
     console.log('✅ Signed in successfully:', user.displayName);
     
     // Show success message
-    showNotification('success', `Welcome, ${user.displayName}!`);
+    showNotification('success', `Welcome, ${user.displayName || user.email}!`);
     
     // Update UI
     updateAuthUI(user);
@@ -41,7 +41,16 @@ window.signInWithGoogle = async function() {
     return user;
   } catch (error) {
     console.error('❌ Sign-in error:', error);
-    showNotification('error', 'Failed to sign in. Please try again.');
+    
+    // Handle specific errors
+    if (error.code === 'auth/popup-closed-by-user') {
+      showNotification('error', 'Sign-in cancelled.');
+    } else if (error.code === 'auth/unauthorized-domain') {
+      showNotification('error', 'Domain not authorized. Please contact support.');
+    } else {
+      showNotification('error', 'Failed to sign in. Please try again.');
+    }
+    
     throw error;
   }
 };
