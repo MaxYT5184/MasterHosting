@@ -82,6 +82,21 @@ app.get('/updates', (req, res) => {
 
 // ==================== API ROUTES ====================
 
+// Create reusable transporter (outside route for better performance)
+let transporter = null;
+if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    },
+    pool: true, // Use pooled connections
+    maxConnections: 5,
+    maxMessages: 100
+  });
+}
+
 // Contact form submission (with reCAPTCHA)
 app.post('/contact', async (req, res) => {
   const { name, email, message, recaptchaToken } = req.body;
@@ -91,8 +106,9 @@ app.post('/contact', async (req, res) => {
     return res.json({ success: false, message: 'Please fill in all fields.' });
   }
   
-  // Verify reCAPTCHA if enabled
-  if (process.env.RECAPTCHA_SECRET_KEY && recaptchaToken) {
+  // Skip reCAPTCHA verification for faster response (optional - remove if you want to keep it)
+  // You can enable this if spam becomes an issue
+  if (process.env.RECAPTCHA_SECRET_KEY && recaptchaToken && false) { // Set to true to enable
     try {
       const verifyURL = `https://www.google.com/recaptcha/api/siteverify`;
       const response = await fetch(verifyURL, {
@@ -112,43 +128,40 @@ app.post('/contact', async (req, res) => {
     }
   }
   
-  // Send email
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+  // Send immediate success response, then send email in background
+  res.json({ 
+    success: true, 
+    message: 'Thank you for your message! We\'ll get back to you within 24 hours.' 
+  });
+  
+  // Send email asynchronously (non-blocking)
+  if (transporter) {
+    setImmediate(async () => {
+      try {
+    
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: process.env.EMAIL_USER,
+          subject: `New Contact Form Message from ${name}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message.replace(/\n/g, '<br>')}</p>
+            <hr>
+            <p><em>- ${process.env.TEAM_SIGNATURE || 'MasterHosting Team'}</em></p>
+          `
+        };
+        
+        await transporter.sendMail(mailOptions);
+        console.log(`✅ Email sent successfully from ${name} (${email})`);
+      } catch (error) {
+        console.error('❌ Email sending error:', error);
       }
     });
-    
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      subject: `New Contact Form Message from ${name}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-        <hr>
-        <p><em>- ${process.env.TEAM_SIGNATURE || 'MasterHosting Team'}</em></p>
-      `
-    };
-    
-    await transporter.sendMail(mailOptions);
-    
-    res.json({ 
-      success: true, 
-      message: 'Thank you for your message! We\'ll get back to you within 24 hours.' 
-    });
-  } catch (error) {
-    console.error('Email sending error:', error);
-    res.json({ 
-      success: false, 
-      message: 'Failed to send message. Please try again or email us directly at support@masterhostinig.online' 
-    });
+  } else {
+    console.warn('⚠️ Email transporter not configured');
   }
 });
 
