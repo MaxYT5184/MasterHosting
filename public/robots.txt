@@ -6,6 +6,13 @@
 # ====================
 User-agent: *
 Allow: /
+Allow: /ads/preferences/
+Allow: /dtt/k
+Allow: /pagead/show_ads.js
+Allow: /pagead/managed/
+Allow: /pagead/html/
+Allow: /pagead/js/
+Allow: /tag/js/
 Disallow: /admin
 Disallow: /profile
 
@@ -35,6 +42,13 @@ Crawl-delay: 0
 # Google AdSense Bot (Essential for Ad Revenue)
 User-agent: Mediapartners-Google
 Allow: /
+Allow: /ads/preferences/
+Allow: /dtt/k
+Allow: /pagead/show_ads.js
+Allow: /pagead/managed/
+Allow: /pagead/html/
+Allow: /pagead/js/
+Allow: /tag/js/
 Crawl-delay: 0
 
 # Google Mobile Bot
