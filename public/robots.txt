@@ -1,17 +1,188 @@
-User-agent: *
-Disallow:
+# MasterHosting - Professional Robots.txt Configuration
+# Last Updated: October 13, 2025
 
+# ====================
+# DEFAULT RULE - ALLOW ALL GOOD BOTS
+# ====================
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /profile
+
+# ====================
+# SITEMAPS
+# ====================
 Sitemap: https://masterhostinig.online/sitemap.xml
 
-# Allow all bots to crawl everything
+# ====================
+# GOOGLE CRAWLERS
+# ====================
+
+# Main Google Search Bot
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /profile
+Crawl-delay: 0
 
+# Google Images
 User-agent: Googlebot-Image
-Allow: /
+Allow: /images/
+Allow: /css/
+Allow: /favicon.svg
+Crawl-delay: 0
 
+# Google AdSense Bot (Essential for Ad Revenue)
 User-agent: Mediapartners-Google
 Allow: /
+Crawl-delay: 0
 
+# Google Mobile Bot
+User-agent: Googlebot-Mobile
+Allow: /
+Disallow: /admin
+Disallow: /profile
+Crawl-delay: 0
+
+# Google News
+User-agent: Googlebot-News
+Allow: /updates
+Allow: /
+
+# ====================
+# BING CRAWLERS
+# ====================
 User-agent: Bingbot
 Allow: /
+Disallow: /admin
+Disallow: /profile
+Crawl-delay: 1
+
+User-agent: BingPreview
+Allow: /
+Disallow: /admin
+
+# ====================
+# OTHER MAJOR SEARCH ENGINES
+# ====================
+
+# Yahoo (uses Bing now)
+User-agent: Slurp
+Allow: /
+Disallow: /admin
+Crawl-delay: 1
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /admin
+Crawl-delay: 1
+
+# Yandex (Russian Search Engine)
+User-agent: YandexBot
+Allow: /
+Disallow: /admin
+Crawl-delay: 2
+
+# Baidu (Chinese Search Engine)
+User-agent: Baiduspider
+Allow: /
+Disallow: /admin
+Crawl-delay: 2
+
+# ====================
+# SOCIAL MEDIA CRAWLERS
+# ====================
+
+# Facebook
+User-agent: facebookexternalhit
+Allow: /
+
+# Twitter
+User-agent: Twitterbot
+Allow: /
+
+# LinkedIn
+User-agent: LinkedInBot
+Allow: /
+
+# Pinterest
+User-agent: Pinterestbot
+Allow: /images/
+Allow: /
+
+# ====================
+# AI CRAWLERS (Allow for visibility)
+# ====================
+
+# OpenAI GPT
+User-agent: GPTBot
+Allow: /
+
+# Google Bard
+User-agent: Google-Extended
+Allow: /
+
+# Anthropic Claude
+User-agent: anthropic-ai
+Allow: /
+
+# ====================
+# BLOCK BAD BOTS & SCRAPERS
+# ====================
+
+# Common scrapers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: Rogerbot
+Disallow: /
+
+# Block email harvesters
+User-agent: EmailCollector
+Disallow: /
+
+User-agent: EmailSiphon
+Disallow: /
+
+User-agent: WebBandit
+Disallow: /
+
+# Block content copiers
+User-agent: HTTrack
+Disallow: /
+
+User-agent: WebCopier
+Disallow: /
+
+User-agent: WebZIP
+Disallow: /
+
+User-agent: Teleport
+Disallow: /
+
+# ====================
+# CRAWL RATE OPTIMIZATION
+# ====================
+# Slow down aggressive crawlers
+User-agent: *
+Crawl-delay: 1
+
+# ====================
+# NOTES
+# ====================
+# - Admin and Profile pages are protected from indexing
+# - All public pages are fully accessible to search engines
+# - AdSense crawlers have full access for optimal ad placement
+# - Bad bots and scrapers are blocked
+# - Social media crawlers allowed for rich previews
+# - AI crawlers allowed for better visibility
