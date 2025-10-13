@@ -2048,3 +2048,20 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* AdSense Ad Section */
+.ad-section {
+    padding: 2rem 0;
+    background: var(--bg-light);
+}
+
+.ad-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .ad-section {
+        padding: 1.5rem 0;
+    }
+}
