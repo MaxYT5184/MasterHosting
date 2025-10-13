@@ -1,0 +1,15 @@
+MasterHosting is a free website hosting platform that provides users with free subdomains and hosting services. We use Google OAuth solely for user authentication and account management.
+
+Our application only accesses basic profile information (name, email, and profile photo) to:
+- Create and manage user accounts
+- Personalize the user experience with welcome messages
+- Enable secure contact form submissions
+- Identify West Scranton Intermediate School members for special access
+
+We do not access, store, or use any other Google services or user data. All OAuth data is used exclusively for authentication purposes and is stored securely on our servers. Users can revoke access at any time through their Google Account settings.
+
+MasterHosting complies with Google's OAuth 2.0 policies and Limited Use requirements. We are committed to protecting user privacy and data security.
+
+Website: https://masterhostinig.online
+Privacy Policy: https://masterhosting.onrender.com/privacy
+Terms of Service: https://masterhosting.onrender.com/terms
