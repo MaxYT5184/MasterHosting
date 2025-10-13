@@ -19,26 +19,19 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 500, // limit each IP to 500 requests per windowMs (increased for monitoring services)
   
-  // Log every request
-  onLimitReached: (req, res, options) => {
-    console.error('🚨 RATE LIMIT REACHED!');
-    console.error('  IP:', req.ip);
-    console.error('  Path:', req.path);
-    console.error('  Method:', req.method);
-    console.error('  User-Agent:', req.get('user-agent'));
-    console.error('  Time:', new Date().toISOString());
-    console.error('  Limit:', options.max, 'requests per', options.windowMs / 60000, 'minutes');
-    console.error('---');
-  },
+  // Standardized message
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   
-  // Custom handler
-  handler: (req, res) => {
+  // Custom handler with logging
+  handler: (req, res, next, options) => {
     console.error('🚫 429 ERROR - Too Many Requests');
     console.error('  IP:', req.ip);
     console.error('  Path:', req.path);
     console.error('  Method:', req.method);
     console.error('  User-Agent:', req.get('user-agent'));
     console.error('  Time:', new Date().toISOString());
+    console.error('  Limit:', options.max, 'requests per', options.windowMs / 60000, 'minutes');
     console.error('---');
     
     res.status(429).render('error-429', {
