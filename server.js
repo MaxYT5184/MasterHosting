@@ -283,12 +283,8 @@ app.post('/contact', async (req, res) => {
       from: `MasterHosting Contact <${process.env.EMAIL_USER}>`,
       to: recipientEmail,
       replyTo: email,
-      subject: `New Contact Form Message from ${name}`,
+      subject: `New Contact Message from ${name} (${email})`,
       html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
         <p>${message.replace(/\n/g, '<br>')}</p>
         <hr>
         <p><em>- ${process.env.TEAM_SIGNATURE || 'MasterHosting Team'}</em></p>
