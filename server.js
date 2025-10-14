@@ -226,6 +226,8 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     maxConnections: 5,
     maxMessages: 100
   });
+} else {
+  console.warn('⚠️ Email transporter not initialized. Missing EMAIL_USER or EMAIL_PASS in environment.');
 }
 
 // Contact form submission (with reCAPTCHA)
@@ -269,10 +271,15 @@ app.post('/contact', async (req, res) => {
   if (transporter) {
     setImmediate(async () => {
       try {
-    
+        const recipientEmail = process.env.EMAIL_TO || process.env.EMAIL_USER;
+        if (!recipientEmail) {
+          console.error('❌ EMAIL_TO and EMAIL_USER are both undefined. Unable to send contact email.');
+          return;
+        }
+
         const mailOptions = {
           from: process.env.EMAIL_USER,
-          to: process.env.EMAIL_USER,
+          to: recipientEmail,
           subject: `New Contact Form Message from ${name}`,
           html: `
             <h2>New Contact Form Submission</h2>
