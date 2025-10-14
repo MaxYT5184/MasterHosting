@@ -226,8 +226,6 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     maxConnections: 5,
     maxMessages: 100
   });
-} else {
-  console.warn('⚠️ Email transporter not initialized. Missing EMAIL_USER or EMAIL_PASS in environment.');
 }
 
 // Contact form submission (with reCAPTCHA)
@@ -261,49 +259,40 @@ app.post('/contact', async (req, res) => {
     }
   }
   
-  if (!transporter) {
+  // Send immediate success response, then send email in background
+  res.json({ 
+    success: true, 
+    message: 'Thank you for your message! We\'ll get back to you within 24 hours.' 
+  });
+  
+  // Send email asynchronously (non-blocking)
+  if (transporter) {
+    setImmediate(async () => {
+      try {
+    
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: process.env.EMAIL_USER,
+          subject: `New Contact Form Message from ${name}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message.replace(/\n/g, '<br>')}</p>
+            <hr>
+            <p><em>- ${process.env.TEAM_SIGNATURE || 'MasterHosting Team'}</em></p>
+          `
+        };
+        
+        await transporter.sendMail(mailOptions);
+        console.log(`✅ Email sent successfully from ${name} (${email})`);
+      } catch (error) {
+        console.error('❌ Email sending error:', error);
+      }
+    });
+  } else {
     console.warn('⚠️ Email transporter not configured');
-    return res.status(500).json({
-      success: false,
-      message: 'Email service is not configured. Please try again later or email support@masterhostinig.online.'
-    });
-  }
-
-  try {
-    const recipientEmail = process.env.EMAIL_TO || process.env.EMAIL_USER;
-    if (!recipientEmail) {
-      console.error('❌ EMAIL_TO and EMAIL_USER are both undefined. Unable to send contact email.');
-      return res.status(500).json({
-        success: false,
-        message: 'Email destination is not configured. Please try again later.'
-      });
-    }
-
-    const mailOptions = {
-      from: `MasterHosting Contact <${process.env.EMAIL_USER}>`,
-      to: recipientEmail,
-      replyTo: email,
-      subject: `New Contact Message from ${name} (${email})`,
-      html: `
-        <p>${message.replace(/\n/g, '<br>')}</p>
-        <hr>
-        <p><em>- ${process.env.TEAM_SIGNATURE || 'MasterHosting Team'}</em></p>
-      `
-    };
-
-    await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent successfully from ${name} (${email})`);
-
-    return res.json({
-      success: true,
-      message: 'Thank you for your message! We\'ll get back to you within 24 hours.'
-    });
-  } catch (error) {
-    console.error('❌ Email sending error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to send your message. Please try again later or email support@masterhostinig.online.'
-    });
   }
 });
 
