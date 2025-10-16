@@ -1,8 +1,0 @@
-# MasterHosting - Robots.txt Configuration
-# Last Updated: October 16, 2025
-# Allow all bots to crawl all content
-
-User-agent: *
-Allow: /
-
-Sitemap: https://masterhosting.online/sitemap.xml
