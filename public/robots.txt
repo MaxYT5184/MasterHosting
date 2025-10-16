@@ -1,0 +1,46 @@
+# MasterHosting - Robots.txt Configuration
+# Last Updated: October 16, 2025
+# Allow all bots to crawl all content
+
+# ====================
+# DEFAULT RULE - ALLOW ALL
+# ====================
+User-agent: *
+Allow: /
+
+# ====================
+# GOOGLE CRAWLERS (Full Access)
+# ====================
+
+# Main Google Search Bot
+User-agent: Googlebot
+Allow: /
+
+# Google Images
+User-agent: Googlebot-Image
+Allow: /
+
+# Google AdSense Bot (Essential for Ad Revenue)
+User-agent: Mediapartners-Google
+Allow: /
+
+# Google Mobile Bot
+User-agent: Googlebot-Mobile
+Allow: /
+
+# Google News
+User-agent: Googlebot-News
+Allow: /
+
+# Google Video
+User-agent: Googlebot-Video
+Allow: /
+
+# Google Extended (Bard/AI)
+User-agent: Google-Extended
+Allow: /
+
+# ====================
+# SITEMAP
+# ====================
+Sitemap: https://masterhosting.online/sitemap.xml
