@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MasterHosting admin dashboard - Manage users, monitor hosting services, and control platform settings.">
-    <meta name="keywords" content="admin dashboard, user management, hosting admin, platform control">
+    <meta name="description" content="<%= description %>">
+    <meta name="keywords" content="<%= keywords %>">
     <meta name="robots" content="noindex, nofollow">
-    <title>Admin Dashboard - MasterHosting</title>
+    <title><%= title %></title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,7 +27,7 @@
         
         .admin-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -42,12 +42,84 @@
         .stat-card h3 {
             color: #667eea;
             margin-bottom: 10px;
+            font-size: 0.9rem;
         }
         
         .stat-card .number {
             font-size: 2.5rem;
             font-weight: bold;
             color: #333;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-in_progress { background: #dbeafe; color: #1e40af; }
+        .status-completed { background: #d1fae5; color: #065f46; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        
+        .order-details {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .order-details.show {
+            display: block;
+        }
+        
+        .order-details h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .order-details p {
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+        
+        .btn-view {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-right: 5px;
+        }
+        
+        .btn-view:hover {
+            background: #5568d3;
+        }
+        
+        .btn-status {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-right: 5px;
+        }
+        
+        .btn-status:hover {
+            background: #059669;
+        }
+        
+        select.status-select {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 5px;
         }
         
         .admin-section {
@@ -184,249 +256,207 @@
         </div>
     </nav>
 
-    <div id="loadingScreen" class="loading">
-        <i class="fas fa-spinner fa-spin fa-3x"></i>
-        <p>Loading admin dashboard...</p>
-    </div>
-
-    <div id="noAccessScreen" class="no-access" style="display: none;">
-        <h2><i class="fas fa-lock"></i> Access Denied</h2>
-        <p>You must be logged in as an admin to access this page.</p>
-        <a href="/login" class="btn btn-primary">Login</a>
-    </div>
-
-    <div id="adminContent" class="admin-container" style="display: none;">
+    <div id="adminContent" class="admin-container">
         <div class="admin-header">
-            <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
-            <p>Manage users and monitor your MasterHosting platform</p>
+            <h1><i class="fas fa-clipboard-list"></i> Order Management Dashboard</h1>
+            <p>Manage website hosting orders from customers</p>
         </div>
 
         <div class="admin-stats">
             <div class="stat-card">
-                <h3><i class="fas fa-users"></i> Total Users</h3>
-                <div class="number" id="totalUsers">0</div>
+                <h3><i class="fas fa-clipboard-list"></i> Total Orders</h3>
+                <div class="number"><%= stats.total %></div>
             </div>
             <div class="stat-card">
-                <h3><i class="fas fa-user-plus"></i> New Today</h3>
-                <div class="number" id="newToday">0</div>
+                <h3><i class="fas fa-clock"></i> Pending</h3>
+                <div class="number"><%= stats.pending %></div>
             </div>
             <div class="stat-card">
-                <h3><i class="fas fa-server"></i> Active Hosting</h3>
-                <div class="number" id="activeHosting">0</div>
+                <h3><i class="fas fa-cog"></i> In Progress</h3>
+                <div class="number"><%= stats.inProgress %></div>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fas fa-check-circle"></i> Completed</h3>
+                <div class="number"><%= stats.completed %></div>
             </div>
         </div>
 
         <div class="admin-section">
-            <h2><i class="fas fa-user-plus"></i> Create New User</h2>
-            <div id="createMessage"></div>
-            <form id="createUserForm" class="create-user-form">
-                <div class="form-group">
-                    <label for="newUserEmail">
-                        <i class="fas fa-envelope"></i> Email
-                    </label>
-                    <input type="email" id="newUserEmail" placeholder="user@example.com" required>
+            <h2><i class="fas fa-list"></i> All Orders (<%= orders.length %>)</h2>
+            <% if (orders.length === 0) { %>
+                <p style="text-align: center; padding: 40px; color: #6b7280;">
+                    <i class="fas fa-inbox" style="font-size: 3rem; display: block; margin-bottom: 15px;"></i>
+                    No orders yet. Orders will appear here when customers submit the order form.
+                </p>
+            <% } else { %>
+                <div style="overflow-x: auto;">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Subdomain</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% orders.forEach(function(order) { %>
+                                <tr>
+                                    <td><%= new Date(order.created_at).toLocaleDateString() %></td>
+                                    <td>
+                                        <strong><%= order.full_name %></strong><br>
+                                        <small><%= order.email %></small>
+                                    </td>
+                                    <td>
+                                        <code><%= order.full_subdomain %></code>
+                                    </td>
+                                    <td><%= order.website_type %></td>
+                                    <td>
+                                        <span class="status-badge status-<%= order.status %>">
+                                            <%= order.status.replace('_', ' ').toUpperCase() %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn-view" onclick="toggleDetails('<%= order.id %>')">
+                                            <i class="fas fa-eye"></i> View
+                                        </button>
+                                        <select class="status-select" onchange="updateStatus('<%= order.id %>', this.value)">
+                                            <option value="">Change Status</option>
+                                            <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="in_progress" <%= order.status === 'in_progress' ? 'selected' : '' %>>In Progress</option>
+                                            <option value="completed" <%= order.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                                            <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                        </select>
+                                        <button class="btn-delete" onclick="deleteOrder('<%= order.id %>')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="padding: 0;">
+                                        <div id="details-<%= order.id %>" class="order-details">
+                                            <h4><i class="fas fa-info-circle"></i> Order Details</h4>
+                                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                                                <div>
+                                                    <h5 style="color: #667eea; margin-bottom: 10px;">Contact Information</h5>
+                                                    <p><strong>Name:</strong> <%= order.full_name %></p>
+                                                    <p><strong>Email:</strong> <%= order.email %></p>
+                                                    <p><strong>Discord:</strong> <%= order.discord_username || 'Not provided' %></p>
+                                                </div>
+                                                <div>
+                                                    <h5 style="color: #667eea; margin-bottom: 10px;">Website Details</h5>
+                                                    <p><strong>Domain:</strong> <%= order.selected_domain %></p>
+                                                    <p><strong>Subdomain:</strong> <%= order.subdomain %></p>
+                                                    <p><strong>Full URL:</strong> <code><%= order.full_subdomain %></code></p>
+                                                    <p><strong>Type:</strong> <%= order.website_type %></p>
+                                                </div>
+                                                <div>
+                                                    <h5 style="color: #667eea; margin-bottom: 10px;">Technical Requirements</h5>
+                                                    <p><strong>Tech Stack:</strong> <%= order.tech_stack %></p>
+                                                    <p><strong>Database:</strong> <%= order.need_database ? '✅ Yes' : '❌ No' %></p>
+                                                    <p><strong>SSL:</strong> <%= order.need_ssl ? '✅ Yes' : '❌ No' %></p>
+                                                    <p><strong>Traffic:</strong> <%= order.estimated_traffic || 'Not specified' %></p>
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 15px;">
+                                                <h5 style="color: #667eea; margin-bottom: 10px;">Description</h5>
+                                                <p style="background: white; padding: 10px; border-radius: 5px;"><%= order.website_description %></p>
+                                            </div>
+                                            <% if (order.github_repo) { %>
+                                                <div style="margin-top: 15px;">
+                                                    <h5 style="color: #667eea; margin-bottom: 10px;">GitHub Repository</h5>
+                                                    <p><a href="<%= order.github_repo %>" target="_blank"><%= order.github_repo %></a></p>
+                                                </div>
+                                            <% } %>
+                                            <% if (order.additional_notes) { %>
+                                                <div style="margin-top: 15px;">
+                                                    <h5 style="color: #667eea; margin-bottom: 10px;">Additional Notes</h5>
+                                                    <p style="background: white; padding: 10px; border-radius: 5px;"><%= order.additional_notes %></p>
+                                                </div>
+                                            <% } %>
+                                            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                                                <p style="font-size: 0.85rem; color: #6b7280;">
+                                                    <strong>Order ID:</strong> <%= order.id %><br>
+                                                    <strong>Created:</strong> <%= new Date(order.created_at).toLocaleString() %><br>
+                                                    <strong>IP Address:</strong> <%= order.ip_address || 'N/A' %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="form-group">
-                    <label for="newUserPassword">
-                        <i class="fas fa-lock"></i> Password
-                    </label>
-                    <input type="password" id="newUserPassword" placeholder="Min 6 characters" required minlength="6">
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-user-plus"></i> Create User
-                </button>
-            </form>
-        </div>
-
-        <div class="admin-section">
-            <h2><i class="fas fa-users"></i> All Users</h2>
-            <div id="usersLoading" class="loading">
-                <i class="fas fa-spinner fa-spin"></i> Loading users...
-            </div>
-            <table id="usersTable" class="user-table" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>User ID</th>
-                        <th>Created</th>
-                        <th>Last Sign In</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="usersTableBody">
-                </tbody>
-            </table>
+            <% } %>
         </div>
     </div>
 
     <script type="module" src="/js/firebase-config.js"></script>
     <script src="/js/main.js"></script>
     
-    <script type="module">
-    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-    function waitForAuth() {
-        return new Promise((resolve) => {
-            const check = () => {
-                if (window.firebaseAuth) {
-                    resolve(window.firebaseAuth);
-                } else {
-                    setTimeout(check, 100);
-                }
-            };
-            check();
-        });
-    }
-
-    const auth = await waitForAuth();
-    const db = getFirestore();
-    
-    const ADMIN_EMAILS = ['a.tormen2012@gmail.com', 'gogojohnny745@gmail.com'];
-
-    onAuthStateChanged(auth, async (user) => {
-        const loadingScreen = document.getElementById('loadingScreen');
-        const noAccessScreen = document.getElementById('noAccessScreen');
-        const adminContent = document.getElementById('adminContent');
-        
-        if (!user) {
-            loadingScreen.style.display = 'none';
-            noAccessScreen.style.display = 'block';
-            return;
+    <script>
+        function toggleDetails(orderId) {
+            const detailsEl = document.getElementById('details-' + orderId);
+            detailsEl.classList.toggle('show');
         }
         
-        if (!ADMIN_EMAILS.includes(user.email)) {
-            loadingScreen.style.display = 'none';
-            noAccessScreen.style.display = 'block';
-            return;
-        }
-        
-        loadingScreen.style.display = 'none';
-        adminContent.style.display = 'block';
-        
-        await loadUsers();
-        await loadStats();
-    });
-
-    async function loadUsers() {
-        const usersLoading = document.getElementById('usersLoading');
-        const usersTable = document.getElementById('usersTable');
-        const usersTableBody = document.getElementById('usersTableBody');
-        
-        try {
-            const usersSnapshot = await getDocs(collection(db, 'users'));
-            usersTableBody.innerHTML = '';
+        async function updateStatus(orderId, newStatus) {
+            if (!newStatus) return;
             
-            if (usersSnapshot.empty) {
-                usersTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No users found</td></tr>';
-            } else {
-                usersSnapshot.forEach((doc) => {
-                    const userData = doc.data();
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${userData.email || 'N/A'}</td>
-                        <td><code>${doc.id}</code></td>
-                        <td>${userData.createdAt ? new Date(userData.createdAt).toLocaleDateString() : 'N/A'}</td>
-                        <td>${userData.lastSignIn ? new Date(userData.lastSignIn).toLocaleDateString() : 'Never'}</td>
-                        <td>
-                            <button class="btn-delete" onclick="deleteUser('${doc.id}', '${userData.email}')">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                        </td>
-                    `;
-                    usersTableBody.appendChild(row);
-                });
+            if (!confirm('Update order status to: ' + newStatus.replace('_', ' ').toUpperCase() + '?')) {
+                location.reload();
+                return;
             }
             
-            usersLoading.style.display = 'none';
-            usersTable.style.display = 'table';
-        } catch (error) {
-            console.error('Error loading users:', error);
-            usersTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error loading users</td></tr>';
-        }
-    }
-
-    async function loadStats() {
-        try {
-            const usersSnapshot = await getDocs(collection(db, 'users'));
-            document.getElementById('totalUsers').textContent = usersSnapshot.size;
-            
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            let newToday = 0;
-            
-            usersSnapshot.forEach((doc) => {
-                const userData = doc.data();
-                if (userData.createdAt) {
-                    const createdDate = new Date(userData.createdAt);
-                    if (createdDate >= today) {
-                        newToday++;
-                    }
+            try {
+                const response = await fetch(`/api/orders/${orderId}/status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Status updated successfully!');
+                    location.reload();
+                } else {
+                    alert('Failed to update status: ' + result.message);
                 }
-            });
-            
-            document.getElementById('newToday').textContent = newToday;
-            document.getElementById('activeHosting').textContent = '0';
-        } catch (error) {
-            console.error('Error loading stats:', error);
-        }
-    }
-
-    document.getElementById('createUserForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const email = document.getElementById('newUserEmail').value;
-        const password = document.getElementById('newUserPassword').value;
-        const messageEl = document.getElementById('createMessage');
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
-        
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            
-            await setDoc(doc(db, 'users', userCredential.user.uid), {
-                email: email,
-                createdAt: new Date().toISOString(),
-                createdBy: 'admin',
-                role: 'user'
-            });
-            
-            messageEl.innerHTML = '<div class="success-message"><i class="fas fa-check-circle"></i> User created successfully!</div>';
-            document.getElementById('createUserForm').reset();
-            
-            await loadUsers();
-            await loadStats();
-            
-            setTimeout(() => { messageEl.innerHTML = ''; }, 5000);
-        } catch (error) {
-            let errorMessage = 'Failed to create user.';
-            if (error.code === 'auth/email-already-in-use') errorMessage = 'Email already in use.';
-            else if (error.code === 'auth/weak-password') errorMessage = 'Password too weak.';
-            
-            messageEl.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-circle"></i> ' + errorMessage + '</div>';
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('Error updating status');
+            }
         }
         
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create User';
-    });
-
-    window.deleteUser = async function(userId, email) {
-        if (!confirm('Are you sure you want to delete user: ' + email + '?')) {
-            return;
+        async function deleteOrder(orderId) {
+            if (!confirm('Are you sure you want to delete this order? This action cannot be undone.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/orders/${orderId}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Order deleted successfully!');
+                    location.reload();
+                } else {
+                    alert('Failed to delete order: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error deleting order:', error);
+                alert('Error deleting order');
+            }
         }
-        
-        try {
-            await deleteDoc(doc(db, 'users', userId));
-            alert('User deleted from database. Note: Firebase Auth user still exists.');
-            await loadUsers();
-            await loadStats();
-        } catch (error) {
-            console.error('Error deleting user:', error);
-            alert('Failed to delete user: ' + error.message);
-        }
-    };
     </script>
 </body>
 </html>

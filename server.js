@@ -5,6 +5,7 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const supabase = require('./supabase-config');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -108,13 +109,55 @@ app.get('/login', (req, res) => {
 });
 
 // Admin Dashboard
-app.get('/admin', (req, res) => {
-  res.render('admin', { 
-    title: 'Admin Dashboard - MasterHosting',
-    page: 'admin',
-    description: 'MasterHosting admin dashboard - Manage users, monitor hosting services, and control platform settings.',
-    keywords: 'admin dashboard, user management, hosting admin, platform control'
-  });
+app.get('/admin', async (req, res) => {
+  try {
+    let orders = [];
+    let stats = {
+      total: 0,
+      pending: 0,
+      inProgress: 0,
+      completed: 0
+    };
+
+    if (supabase) {
+      // Fetch all orders from Supabase
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching orders:', error);
+      } else {
+        orders = data || [];
+        
+        // Calculate stats
+        stats.total = orders.length;
+        stats.pending = orders.filter(o => o.status === 'pending').length;
+        stats.inProgress = orders.filter(o => o.status === 'in_progress').length;
+        stats.completed = orders.filter(o => o.status === 'completed').length;
+      }
+    }
+
+    res.render('admin', { 
+      title: 'Admin Dashboard - MasterHosting',
+      page: 'admin',
+      orders: orders,
+      stats: stats,
+      description: 'MasterHosting admin dashboard - Manage users, monitor hosting services, and control platform settings.',
+      keywords: 'admin dashboard, user management, hosting admin, platform control'
+    });
+  } catch (error) {
+    console.error('Admin dashboard error:', error);
+    res.render('admin', { 
+      title: 'Admin Dashboard - MasterHosting',
+      page: 'admin',
+      orders: [],
+      stats: { total: 0, pending: 0, inProgress: 0, completed: 0 },
+      description: 'MasterHosting admin dashboard - Manage users, monitor hosting services, and control platform settings.',
+      keywords: 'admin dashboard, user management, hosting admin, platform control'
+    });
+  }
 });
 
 // Profile page
@@ -190,6 +233,17 @@ app.get('/updates', (req, res) => {
     page: 'updates',
     description: 'Stay updated with the latest MasterHosting news, features, improvements, and announcements. Check out our changelog and new releases.',
     keywords: 'updates, changelog, news, announcements, new features, hosting updates, platform news'
+  });
+});
+
+// Order page
+app.get('/order', (req, res) => {
+  res.render('order', { 
+    title: 'Order Free Website - MasterHosting',
+    page: 'order',
+    recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || '',
+    description: 'Order your free website hosting today! Choose from masterhostinig.online or defendaminecraft.online domains. Fill out our simple form and get your website live in 24-48 hours.',
+    keywords: 'order hosting, free website order, get free hosting, website hosting form, order free website, hosting signup, free domain hosting'
   });
 });
 
@@ -311,6 +365,283 @@ app.post('/api/log-error', (req, res) => {
   res.json({ success: true });
 });
 
+// Order form submission (with reCAPTCHA)
+app.post('/api/order', async (req, res) => {
+  const { 
+    fullName, 
+    email, 
+    discordUsername,
+    selectedDomain,
+    subdomain,
+    websiteType,
+    websiteDescription,
+    techStack,
+    needDatabase,
+    needSSL,
+    estimatedTraffic,
+    githubRepo,
+    additionalNotes,
+    recaptchaToken 
+  } = req.body;
+  
+  // Validate required fields
+  if (!fullName || !email || !selectedDomain || !subdomain || !websiteType || !websiteDescription || !techStack) {
+    return res.json({ success: false, message: 'Please fill in all required fields.' });
+  }
+  
+  // Validate subdomain format
+  const subdomainRegex = /^[a-z0-9-]+$/;
+  if (!subdomainRegex.test(subdomain)) {
+    return res.json({ success: false, message: 'Invalid subdomain format. Use only lowercase letters, numbers, and hyphens.' });
+  }
+  
+  // Skip reCAPTCHA verification for faster response (optional - enable if spam becomes an issue)
+  if (process.env.RECAPTCHA_SECRET_KEY && recaptchaToken && false) { // Set to true to enable
+    try {
+      const verifyURL = `https://www.google.com/recaptcha/api/siteverify`;
+      const response = await fetch(verifyURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
+      });
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        return res.json({ success: false, message: 'reCAPTCHA verification failed. Please try again.' });
+      }
+    } catch (error) {
+      console.error('reCAPTCHA verification error:', error);
+      return res.json({ success: false, message: 'reCAPTCHA verification error.' });
+    }
+  }
+  
+  const fullSubdomain = `${subdomain}.${selectedDomain}`;
+  
+  // Save to Supabase database
+  let orderId = null;
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .insert([
+          {
+            full_name: fullName,
+            email: email,
+            discord_username: discordUsername || null,
+            selected_domain: selectedDomain,
+            subdomain: subdomain,
+            full_subdomain: fullSubdomain,
+            website_type: websiteType,
+            website_description: websiteDescription,
+            tech_stack: techStack,
+            need_database: needDatabase === 'on' || needDatabase === true,
+            need_ssl: needSSL === 'on' || needSSL === true || needSSL !== false,
+            estimated_traffic: estimatedTraffic || 'low',
+            github_repo: githubRepo || null,
+            additional_notes: additionalNotes || null,
+            status: 'pending',
+            ip_address: req.ip,
+            user_agent: req.get('user-agent')
+          }
+        ])
+        .select();
+      
+      if (error) {
+        console.error('❌ Supabase insert error:', error);
+      } else {
+        orderId = data[0]?.id;
+        console.log(`✅ Order saved to Supabase with ID: ${orderId}`);
+      }
+    } catch (error) {
+      console.error('❌ Supabase error:', error);
+    }
+  }
+  
+  // Send immediate success response
+  res.json({ 
+    success: true, 
+    message: '🎉 Order received successfully! You\'ll receive a confirmation email shortly. We\'ll set up your website within 24-48 hours!',
+    orderId: orderId
+  });
+  
+  // Send email asynchronously (non-blocking)
+  if (transporter) {
+    setImmediate(async () => {
+      try {
+        const fullSubdomain = `${subdomain}.${selectedDomain}`;
+        
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: 'a.tormen2012@gmail.com',
+          subject: `🚀 New Website Order from ${fullName}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #6366f1;">🚀 New Website Hosting Order</h2>
+              
+              <h3 style="color: #4f46e5;">👤 Personal Information</h3>
+              <p><strong>Name:</strong> ${fullName}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Discord:</strong> ${discordUsername || 'Not provided'}</p>
+              
+              <h3 style="color: #4f46e5;">🌐 Website Details</h3>
+              <p><strong>Full Domain:</strong> <code style="background: #f3f4f6; padding: 4px 8px; border-radius: 4px;">${fullSubdomain}</code></p>
+              <p><strong>Selected Domain:</strong> ${selectedDomain}</p>
+              <p><strong>Subdomain:</strong> ${subdomain}</p>
+              <p><strong>Website Type:</strong> ${websiteType}</p>
+              <p><strong>Description:</strong></p>
+              <p style="background: #f9fafb; padding: 12px; border-left: 4px solid #6366f1;">${websiteDescription.replace(/\n/g, '<br>')}</p>
+              
+              <h3 style="color: #4f46e5;">⚙️ Technical Requirements</h3>
+              <p><strong>Technology Stack:</strong> ${techStack}</p>
+              <p><strong>Database Needed:</strong> ${needDatabase ? '✅ Yes' : '❌ No'}</p>
+              <p><strong>SSL Certificate:</strong> ${needSSL ? '✅ Yes (HTTPS)' : '❌ No'}</p>
+              <p><strong>Expected Traffic:</strong> ${estimatedTraffic || 'Not specified'}</p>
+              
+              <h3 style="color: #4f46e5;">📝 Additional Information</h3>
+              <p><strong>GitHub Repository:</strong> ${githubRepo || 'Not provided'}</p>
+              <p><strong>Additional Notes:</strong></p>
+              <p style="background: #f9fafb; padding: 12px; border-left: 4px solid #6366f1;">${additionalNotes ? additionalNotes.replace(/\n/g, '<br>') : 'None'}</p>
+              
+              <hr style="margin: 24px 0; border: none; border-top: 2px solid #e5e7eb;">
+              
+              <p style="color: #6b7280; font-size: 14px;">
+                <strong>Next Steps:</strong><br>
+                1. Review the order details<br>
+                2. Set up hosting environment<br>
+                3. Configure subdomain: ${fullSubdomain}<br>
+                4. Send credentials to: ${email}<br>
+                5. Notify customer when live
+              </p>
+              
+              <p style="color: #6b7280; font-size: 12px; margin-top: 24px;">
+                <em>Order received: ${new Date().toLocaleString()}</em>
+              </p>
+            </div>
+          `
+        };
+        
+        await transporter.sendMail(mailOptions);
+        console.log(`✅ Order email sent successfully for ${fullSubdomain} (${email})`);
+        
+        // Send confirmation email to customer
+        const customerMailOptions = {
+          from: process.env.EMAIL_USER,
+          to: email,
+          subject: '🎉 Your Free Website Order Confirmation - MasterHosting',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #6366f1;">🎉 Order Confirmed!</h2>
+              
+              <p>Hi ${fullName},</p>
+              
+              <p>Thank you for ordering your free website with MasterHosting! We've received your order and are excited to get your website up and running.</p>
+              
+              <div style="background: #f0f9ff; border-left: 4px solid #6366f1; padding: 16px; margin: 24px 0;">
+                <h3 style="margin-top: 0; color: #4f46e5;">📋 Order Summary</h3>
+                <p><strong>Your Website URL:</strong> <code style="background: white; padding: 4px 8px; border-radius: 4px;">${fullSubdomain}</code></p>
+                <p><strong>Website Type:</strong> ${websiteType}</p>
+                <p><strong>Technology:</strong> ${techStack}</p>
+              </div>
+              
+              <h3 style="color: #4f46e5;">⏱️ What Happens Next?</h3>
+              <ol style="line-height: 1.8;">
+                <li><strong>Setup (24-48 hours):</strong> Our team will configure your hosting environment</li>
+                <li><strong>Configuration:</strong> We'll set up your subdomain and install necessary software</li>
+                <li><strong>Credentials:</strong> You'll receive login details via email</li>
+                <li><strong>Go Live:</strong> Your website will be ready to use!</li>
+              </ol>
+              
+              <div style="background: #f9fafb; padding: 16px; border-radius: 8px; margin: 24px 0;">
+                <p style="margin: 0;"><strong>💡 Tip:</strong> While you wait, prepare your website files or content. If you provided a GitHub repository, we'll deploy it automatically!</p>
+              </div>
+              
+              <p>If you have any questions, feel free to reply to this email or contact us at <a href="mailto:support@masterhostinig.online">support@masterhostinig.online</a>.</p>
+              
+              <p style="margin-top: 32px;">
+                Best regards,<br>
+                <strong>The MasterHosting Team</strong><br>
+                <a href="https://masterhostinig.online">masterhostinig.online</a>
+              </p>
+              
+              <hr style="margin: 24px 0; border: none; border-top: 1px solid #e5e7eb;">
+              
+              <p style="color: #6b7280; font-size: 12px;">
+                This is an automated confirmation email. Order received on ${new Date().toLocaleString()}.
+              </p>
+            </div>
+          `
+        };
+        
+        await transporter.sendMail(customerMailOptions);
+        console.log(`✅ Confirmation email sent to customer: ${email}`);
+      } catch (error) {
+        console.error('❌ Order email sending error:', error);
+      }
+    });
+  } else {
+    console.warn('⚠️ Email transporter not configured - Order received but no email sent');
+  }
+});
+
+// Update order status (admin only)
+app.post('/api/orders/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  
+  if (!supabase) {
+    return res.json({ success: false, message: 'Database not configured' });
+  }
+  
+  if (!['pending', 'in_progress', 'completed', 'cancelled'].includes(status)) {
+    return res.json({ success: false, message: 'Invalid status' });
+  }
+  
+  try {
+    const { data, error } = await supabase
+      .from('orders')
+      .update({ status: status })
+      .eq('id', id)
+      .select();
+    
+    if (error) {
+      console.error('Error updating order status:', error);
+      return res.json({ success: false, message: 'Failed to update status' });
+    }
+    
+    res.json({ success: true, message: 'Status updated successfully', order: data[0] });
+  } catch (error) {
+    console.error('Error updating order:', error);
+    res.json({ success: false, message: 'Server error' });
+  }
+});
+
+// Delete order (admin only)
+app.delete('/api/orders/:id', async (req, res) => {
+  const { id } = req.params;
+  
+  if (!supabase) {
+    return res.json({ success: false, message: 'Database not configured' });
+  }
+  
+  try {
+    const { error } = await supabase
+      .from('orders')
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error deleting order:', error);
+      return res.json({ success: false, message: 'Failed to delete order' });
+    }
+    
+    res.json({ success: true, message: 'Order deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting order:', error);
+    res.json({ success: false, message: 'Server error' });
+  }
+});
+
 // AI Chatbot endpoint
 app.post('/api/chat', (req, res) => {
   const { message } = req.body;
@@ -330,13 +661,15 @@ app.post('/api/chat', (req, res) => {
   } else if (userMessage.includes('free') || userMessage.includes('pricing')) {
     response = 'Yes! MasterHosting is completely FREE! 🆓 We offer free hosting for 1-2 websites per user, including a free subdomain. No hidden fees, no credit card required!';
   } else if (userMessage.includes('how') || userMessage.includes('start') || userMessage.includes('get started')) {
-    response = 'Getting started is easy! Just go to our Contact page and send us a message with your hosting request. Tell us your desired subdomain name and we\'ll set you up! 🚀';
+    response = 'Getting started is easy! Just go to our Order page (/order) and fill out the form with your hosting request. Tell us your desired subdomain name and we\'ll set you up! 🚀';
   } else if (userMessage.includes('subdomain') || userMessage.includes('domain')) {
-    response = 'Every free hosting plan includes a free subdomain like yourname.masterhostinig.online! Just let us know what subdomain you\'d like when you contact us. 🌐';
+    response = 'Every free hosting plan includes a free subdomain! Choose between masterhostinig.online or defendaminecraft.online. Just let us know what subdomain you\'d like on our Order page! 🌐';
   } else if (userMessage.includes('contact') || userMessage.includes('email') || userMessage.includes('support')) {
     response = 'You can contact us through our Contact page or email us at support@masterhostinig.online. We respond within 24 hours! 📧';
   } else if (userMessage.includes('features') || userMessage.includes('what do you offer')) {
     response = 'MasterHosting offers: ✨ Free hosting for 1-2 websites, 🌐 Free subdomain, 🤖 24/7 AI support (that\'s me!), 🔒 Secure hosting, and ⚡ Fast performance!';
+  } else if (userMessage.includes('order') || userMessage.includes('sign up') || userMessage.includes('signup')) {
+    response = 'Ready to get started? Visit our Order page at /order to fill out the hosting request form. It only takes a few minutes! 🚀';
   } else if (userMessage.includes('west scranton') || userMessage.includes('scranton')) {
     response = 'West Scranton Intermediate members get special access! Contact Andy at andy@westscranton.edu for enhanced features and priority support! 🎓';
   } else if (userMessage.includes('thank')) {

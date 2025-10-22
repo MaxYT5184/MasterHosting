@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<%= description %>">
+    <meta name="keywords" content="<%= keywords %>">
+    <title><%= title %></title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="/" class="logo">
+                    <img src="/images/logo.svg" alt="MasterHosting Logo" class="logo-img" onerror="this.style.display='none'">
+                    <span class="logo-text">Master<span class="highlight">Hosting</span></span>
+                </a>
+                
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/#how-it-works">How It Works</a></li>
+                    <li><a href="/updates">Updates</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/order" class="active">Order Now</a></li>
+                </ul>
+                
+                <!-- Auth Section -->
+                <div class="auth-section">
+                    <a id="loginBtn" href="/login" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    
+                    <div id="userInfo" class="user-info" style="display: none;">
+                        <img id="userPhoto" src="" alt="User" class="user-photo">
+                        <div class="user-details">
+                            <span id="userName" class="user-name"></span>
+                            <button onclick="signOutUser()" class="btn-logout">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Order Hero Section -->
+        <section class="order-hero">
+            <div class="container">
+                <div class="order-hero-content">
+                    <h1>🚀 Order Your Free Website</h1>
+                    <p class="lead">Fill out the form below to get your free website hosted on one of our premium domains!</p>
+                    <div class="order-features">
+                        <div class="order-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>100% Free Forever</span>
+                        </div>
+                        <div class="order-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Setup in 24-48 Hours</span>
+                        </div>
+                        <div class="order-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>24/7 Support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Form Section -->
+        <section class="order-form-section">
+            <div class="container">
+                <div class="order-form-wrapper">
+                    <!-- Domain Selection Cards -->
+                    <div class="domain-selection">
+                        <h2>📍 Step 1: Choose Your Domain</h2>
+                        <p class="section-subtitle">Select which domain you'd like your website hosted on</p>
+                        
+                        <div class="domain-cards">
+                            <div class="domain-card" data-domain="masterhostinig.online">
+                                <div class="domain-card-header">
+                                    <i class="fas fa-globe"></i>
+                                    <h3>masterhostinig.online</h3>
+                                </div>
+                                <p class="domain-description">Perfect for general websites, portfolios, and business sites</p>
+                                <div class="domain-example">
+                                    <i class="fas fa-link"></i>
+                                    <span>yourname.masterhostinig.online</span>
+                                </div>
+                                <button class="btn-select-domain" onclick="selectDomain('masterhostinig.online')">
+                                    Select This Domain
+                                </button>
+                            </div>
+
+                            <div class="domain-card" data-domain="defendaminecraft.online">
+                                <div class="domain-card-header">
+                                    <i class="fas fa-gamepad"></i>
+                                    <h3>defendaminecraft.online</h3>
+                                </div>
+                                <p class="domain-description">Ideal for gaming communities, Minecraft servers, and gaming content</p>
+                                <div class="domain-example">
+                                    <i class="fas fa-link"></i>
+                                    <span>yourname.defendaminecraft.online</span>
+                                </div>
+                                <button class="btn-select-domain" onclick="selectDomain('defendaminecraft.online')">
+                                    Select This Domain
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Form -->
+                    <div class="order-form-container">
+                        <h2>📝 Step 2: Fill Out Your Information</h2>
+                        <p class="section-subtitle">Tell us about your website project</p>
+
+                        <form id="orderForm" class="order-form">
+                            <!-- Personal Information -->
+                            <div class="form-section">
+                                <h3><i class="fas fa-user"></i> Personal Information</h3>
+                                
+                                <div class="form-group">
+                                    <label for="fullName">Full Name *</label>
+                                    <input type="text" id="fullName" name="fullName" required placeholder="John Doe">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required placeholder="john@example.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="discordUsername">Discord Username (Optional)</label>
+                                    <input type="text" id="discordUsername" name="discordUsername" placeholder="username#1234">
+                                    <small>For faster communication and updates</small>
+                                </div>
+                            </div>
+
+                            <!-- Website Details -->
+                            <div class="form-section">
+                                <h3><i class="fas fa-globe"></i> Website Details</h3>
+                                
+                                <div class="form-group">
+                                    <label for="selectedDomain">Selected Domain *</label>
+                                    <input type="text" id="selectedDomain" name="selectedDomain" readonly required placeholder="Select a domain above">
+                                    <small>Choose a domain from Step 1 above</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="subdomain">Desired Subdomain *</label>
+                                    <div class="subdomain-input-wrapper">
+                                        <input type="text" id="subdomain" name="subdomain" required placeholder="mywebsite" pattern="[a-z0-9-]+" title="Only lowercase letters, numbers, and hyphens allowed">
+                                        <span class="subdomain-preview" id="subdomainPreview">.masterhostinig.online</span>
+                                    </div>
+                                    <small>Only lowercase letters, numbers, and hyphens. Example: my-website</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="websiteType">Website Type *</label>
+                                    <select id="websiteType" name="websiteType" required>
+                                        <option value="">-- Select Type --</option>
+                                        <option value="personal">Personal Website/Portfolio</option>
+                                        <option value="blog">Blog</option>
+                                        <option value="business">Business Website</option>
+                                        <option value="gaming">Gaming/Minecraft Server</option>
+                                        <option value="community">Community/Forum</option>
+                                        <option value="ecommerce">E-commerce/Store</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="websiteDescription">Website Description *</label>
+                                    <textarea id="websiteDescription" name="websiteDescription" required rows="4" placeholder="Describe what your website will be about, its purpose, and main features..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Technical Requirements -->
+                            <div class="form-section">
+                                <h3><i class="fas fa-code"></i> Technical Requirements</h3>
+                                
+                                <div class="form-group">
+                                    <label for="techStack">Technology Stack *</label>
+                                    <select id="techStack" name="techStack" required>
+                                        <option value="">-- Select Technology --</option>
+                                        <option value="html-css-js">HTML/CSS/JavaScript (Static)</option>
+                                        <option value="react">React</option>
+                                        <option value="vue">Vue.js</option>
+                                        <option value="angular">Angular</option>
+                                        <option value="nextjs">Next.js</option>
+                                        <option value="wordpress">WordPress</option>
+                                        <option value="nodejs">Node.js/Express</option>
+                                        <option value="python">Python (Flask/Django)</option>
+                                        <option value="php">PHP</option>
+                                        <option value="other">Other (Specify in notes)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="needDatabase" name="needDatabase">
+                                        I need a database (MySQL/MongoDB)
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="needSSL" name="needSSL" checked>
+                                        I need SSL certificate (HTTPS) - Recommended
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="estimatedTraffic">Expected Monthly Traffic</label>
+                                    <select id="estimatedTraffic" name="estimatedTraffic">
+                                        <option value="low">Low (0-1,000 visitors)</option>
+                                        <option value="medium">Medium (1,000-10,000 visitors)</option>
+                                        <option value="high">High (10,000+ visitors)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Additional Information -->
+                            <div class="form-section">
+                                <h3><i class="fas fa-info-circle"></i> Additional Information</h3>
+                                
+                                <div class="form-group">
+                                    <label for="githubRepo">GitHub Repository (Optional)</label>
+                                    <input type="url" id="githubRepo" name="githubRepo" placeholder="https://github.com/username/repo">
+                                    <small>If your website code is on GitHub, we can deploy it directly</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="additionalNotes">Additional Notes/Requirements</label>
+                                    <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Any special requirements, features, or questions..."></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                                        I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> *
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- reCAPTCHA -->
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="<%= recaptchaSiteKey %>"></div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-large">
+                                    <i class="fas fa-paper-plane"></i> Submit Order
+                                </button>
+                            </div>
+
+                            <!-- Success/Error Messages -->
+                            <div id="formMessage" class="form-message" style="display: none;"></div>
+                        </form>
+                    </div>
+
+                    <!-- What Happens Next -->
+                    <div class="order-timeline">
+                        <h2>⏱️ What Happens Next?</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Order Received</h4>
+                                    <p>You'll receive a confirmation email immediately after submitting</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Setup & Configuration</h4>
+                                    <p>Our team will set up your hosting environment (24-48 hours)</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Go Live!</h4>
+                                    <p>Your website will be live with login credentials sent to your email</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>MasterHosting</h3>
+                    <p>100% FREE website hosting with free subdomains. Fast, reliable, and always free!</p>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/order">Order Now</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> support@masterhostinig.online</li>
+                        <li><i class="fas fa-globe"></i> masterhostinig.online</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <%= new Date().getFullYear() %> MasterHosting. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Authentication -->
+    <script type="module" src="/js/firebase-config.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="/js/main.js"></script>
+    
+    <script>
+        // Domain selection
+        function selectDomain(domain) {
+            // Update selected domain input
+            document.getElementById('selectedDomain').value = domain;
+            
+            // Update subdomain preview
+            const subdomainPreview = document.getElementById('subdomainPreview');
+            const subdomainInput = document.getElementById('subdomain');
+            subdomainPreview.textContent = '.' + domain;
+            
+            // Visual feedback
+            document.querySelectorAll('.domain-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`[data-domain="${domain}"]`).classList.add('selected');
+            
+            // Scroll to form
+            document.querySelector('.order-form-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Update subdomain preview as user types
+        document.getElementById('subdomain').addEventListener('input', function(e) {
+            const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
+            e.target.value = value;
+        });
+
+        // Form submission
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formMessage = document.getElementById('formMessage');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            
+            // Get form data
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Get reCAPTCHA token
+            const recaptchaResponse = grecaptcha.getResponse();
+            data.recaptchaToken = recaptchaResponse;
+            
+            try {
+                const response = await fetch('/api/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    formMessage.className = 'form-message success';
+                    formMessage.textContent = result.message;
+                    formMessage.style.display = 'block';
+                    
+                    // Reset form
+                    e.target.reset();
+                    document.querySelectorAll('.domain-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    grecaptcha.reset();
+                    
+                    // Scroll to message
+                    formMessage.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    formMessage.className = 'form-message error';
+                    formMessage.textContent = result.message;
+                    formMessage.style.display = 'block';
+                }
+            } catch (error) {
+                formMessage.className = 'form-message error';
+                formMessage.textContent = 'An error occurred. Please try again.';
+                formMessage.style.display = 'block';
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Order';
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
