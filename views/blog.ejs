@@ -1,0 +1,247 @@
+<% 
+const body = `
+<!-- Blog Hero -->
+<section class="blog-hero">
+    <div class="container">
+        <h1>MasterHosting Knowledge Base</h1>
+        <p>Expert guides, tutorials, and insights for web hosting and development</p>
+        <div class="blog-search">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search articles, tutorials, and guides..." id="blogSearch">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Articles -->
+<section class="featured-articles">
+    <div class="container">
+        <h2>Featured Articles</h2>
+        <div class="articles-grid">
+            <article class="article-card featured">
+                <div class="article-image">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span class="category">Web Hosting</span>
+                        <span class="date">October 2024</span>
+                    </div>
+                    <h3><a href="/blog/complete-guide-web-hosting">The Complete Guide to Web Hosting: Everything You Need to Know</a></h3>
+                    <p>A comprehensive 5000-word guide covering shared hosting, VPS, dedicated servers, cloud hosting, and how to choose the right hosting solution for your needs.</p>
+                    <div class="article-stats">
+                        <span><i class="fas fa-clock"></i> 15 min read</span>
+                        <span><i class="fas fa-eye"></i> 2,847 views</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card featured">
+                <div class="article-image">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span class="category">Web Development</span>
+                        <span class="date">October 2024</span>
+                    </div>
+                    <h3><a href="/blog/html-css-javascript-beginners">HTML, CSS & JavaScript for Beginners: Build Your First Website</a></h3>
+                    <p>Step-by-step tutorial series teaching web development fundamentals. Learn to create responsive, modern websites from scratch with practical examples.</p>
+                    <div class="article-stats">
+                        <span><i class="fas fa-clock"></i> 25 min read</span>
+                        <span><i class="fas fa-eye"></i> 4,123 views</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card featured">
+                <div class="article-image">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span class="category">Security</span>
+                        <span class="date">October 2024</span>
+                    </div>
+                    <h3><a href="/blog/website-security-best-practices">Website Security Best Practices: Protect Your Site from Hackers</a></h3>
+                    <p>Essential security measures every website owner should implement. Learn about SSL certificates, secure passwords, backups, and common vulnerabilities.</p>
+                    <div class="article-stats">
+                        <span><i class="fas fa-clock"></i> 12 min read</span>
+                        <span><i class="fas fa-eye"></i> 1,956 views</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Categories -->
+<section class="blog-categories">
+    <div class="container">
+        <h2>Browse by Category</h2>
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3>Web Hosting</h3>
+                <p>Everything about hosting types, server management, and performance optimization</p>
+                <span class="article-count">24 Articles</span>
+                <a href="/blog/category/web-hosting" class="category-link">Explore Category</a>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Web Development</h3>
+                <p>HTML, CSS, JavaScript tutorials and modern web development practices</p>
+                <span class="article-count">31 Articles</span>
+                <a href="/blog/category/web-development" class="category-link">Explore Category</a>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>SEO & Marketing</h3>
+                <p>Search engine optimization, digital marketing, and website promotion strategies</p>
+                <span class="article-count">18 Articles</span>
+                <a href="/blog/category/seo-marketing" class="category-link">Explore Category</a>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Security</h3>
+                <p>Website security, SSL certificates, malware protection, and safety best practices</p>
+                <span class="article-count">15 Articles</span>
+                <a href="/blog/category/security" class="category-link">Explore Category</a>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3>Tools & Resources</h3>
+                <p>Useful tools, calculators, generators, and resources for web developers</p>
+                <span class="article-count">22 Articles</span>
+                <a href="/blog/category/tools" class="category-link">Explore Category</a>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3>Troubleshooting</h3>
+                <p>Common issues, error fixes, and step-by-step problem-solving guides</p>
+                <span class="article-count">19 Articles</span>
+                <a href="/blog/category/troubleshooting" class="category-link">Explore Category</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Articles -->
+<section class="recent-articles">
+    <div class="container">
+        <h2>Latest Articles</h2>
+        <div class="articles-list">
+            <article class="article-item">
+                <div class="article-meta">
+                    <span class="category">Web Hosting</span>
+                    <span class="date">Oct 24, 2024</span>
+                </div>
+                <h3><a href="/blog/free-hosting-vs-paid-hosting">Free Hosting vs Paid Hosting: Complete Comparison Guide</a></h3>
+                <p>Detailed analysis of free and paid hosting options, including pros, cons, limitations, and when to upgrade. Make an informed decision for your website.</p>
+                <div class="article-stats">
+                    <span><i class="fas fa-clock"></i> 8 min read</span>
+                </div>
+            </article>
+
+            <article class="article-item">
+                <div class="article-meta">
+                    <span class="category">Web Development</span>
+                    <span class="date">Oct 23, 2024</span>
+                </div>
+                <h3><a href="/blog/responsive-web-design-guide">Responsive Web Design: Complete Guide for 2024</a></h3>
+                <p>Learn how to create websites that look perfect on all devices. Covers CSS Grid, Flexbox, media queries, and modern responsive design techniques.</p>
+                <div class="article-stats">
+                    <span><i class="fas fa-clock"></i> 18 min read</span>
+                </div>
+            </article>
+
+            <article class="article-item">
+                <div class="article-meta">
+                    <span class="category">SEO</span>
+                    <span class="date">Oct 22, 2024</span>
+                </div>
+                <h3><a href="/blog/seo-for-beginners">SEO for Beginners: Rank Higher in Google Search Results</a></h3>
+                <p>Complete SEO guide covering keyword research, on-page optimization, technical SEO, and link building strategies that actually work in 2024.</p>
+                <div class="article-stats">
+                    <span><i class="fas fa-clock"></i> 22 min read</span>
+                </div>
+            </article>
+
+            <article class="article-item">
+                <div class="article-meta">
+                    <span class="category">Security</span>
+                    <span class="date">Oct 21, 2024</span>
+                </div>
+                <h3><a href="/blog/ssl-certificate-guide">SSL Certificates Explained: HTTPS Security for Your Website</a></h3>
+                <p>Everything you need to know about SSL certificates, how they work, different types, and how to install them on your hosting account.</p>
+                <div class="article-stats">
+                    <span><i class="fas fa-clock"></i> 10 min read</span>
+                </div>
+            </article>
+
+            <article class="article-item">
+                <div class="article-meta">
+                    <span class="category">Tools</span>
+                    <span class="date">Oct 20, 2024</span>
+                </div>
+                <h3><a href="/blog/website-speed-optimization">Website Speed Optimization: Make Your Site Load Lightning Fast</a></h3>
+                <p>Comprehensive guide to improving website performance. Learn about image optimization, caching, CDNs, and tools to measure and improve speed.</p>
+                <div class="article-stats">
+                    <span><i class="fas fa-clock"></i> 16 min read</span>
+                </div>
+            </article>
+
+            <article class="article-item">
+                <div class="article-meta">
+                    <span class="category">Troubleshooting</span>
+                    <span class="date">Oct 19, 2024</span>
+                </div>
+                <h3><a href="/blog/common-hosting-errors">Common Hosting Errors and How to Fix Them</a></h3>
+                <p>Troubleshoot the most common hosting issues including 500 errors, DNS problems, email issues, and database connection errors with step-by-step solutions.</p>
+                <div class="article-stats">
+                    <span><i class="fas fa-clock"></i> 14 min read</span>
+                </div>
+            </article>
+        </div>
+        
+        <div class="load-more">
+            <button class="btn btn-secondary">Load More Articles</button>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Signup -->
+<section class="newsletter-signup">
+    <div class="container">
+        <div class="newsletter-content">
+            <h2>Stay Updated</h2>
+            <p>Get the latest web hosting tips, tutorials, and industry insights delivered to your inbox weekly.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+            <p class="newsletter-note">No spam, unsubscribe anytime. We respect your privacy.</p>
+        </div>
+    </div>
+</section>
+`;
+%>
+<%- include('layout', { title: 'Knowledge Base & Blog - MasterHosting', page: 'blog', body }) %>

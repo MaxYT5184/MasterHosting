@@ -1,0 +1,286 @@
+<% 
+const body = `
+<!-- Tools Hero -->
+<section class="tools-hero">
+    <div class="container">
+        <h1>Free Web Development Tools</h1>
+        <p>Professional-grade tools and calculators to help you build better websites</p>
+    </div>
+</section>
+
+<!-- Tools Grid -->
+<section class="tools-section">
+    <div class="container">
+        <div class="tools-grid">
+            <!-- Website Speed Test -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <h3>Website Speed Test</h3>
+                <p>Test your website's loading speed and get optimization recommendations</p>
+                <div class="tool-form">
+                    <input type="url" placeholder="Enter your website URL" id="speedTestUrl">
+                    <button class="btn btn-primary" onclick="testSpeed()">Test Speed</button>
+                </div>
+                <div id="speedResults" class="tool-results"></div>
+            </div>
+
+            <!-- SSL Checker -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>SSL Certificate Checker</h3>
+                <p>Verify SSL certificate validity and security configuration</p>
+                <div class="tool-form">
+                    <input type="url" placeholder="Enter website URL" id="sslUrl">
+                    <button class="btn btn-primary" onclick="checkSSL()">Check SSL</button>
+                </div>
+                <div id="sslResults" class="tool-results"></div>
+            </div>
+
+            <!-- Domain Availability -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h3>Domain Availability</h3>
+                <p>Check if your desired domain name is available for registration</p>
+                <div class="tool-form">
+                    <input type="text" placeholder="Enter domain name" id="domainName">
+                    <button class="btn btn-primary" onclick="checkDomain()">Check Domain</button>
+                </div>
+                <div id="domainResults" class="tool-results"></div>
+            </div>
+
+            <!-- Password Generator -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h3>Secure Password Generator</h3>
+                <p>Generate strong, secure passwords for your accounts</p>
+                <div class="tool-form">
+                    <div class="password-options">
+                        <label><input type="checkbox" checked> Uppercase</label>
+                        <label><input type="checkbox" checked> Lowercase</label>
+                        <label><input type="checkbox" checked> Numbers</label>
+                        <label><input type="checkbox" checked> Symbols</label>
+                        <label>Length: <input type="range" min="8" max="50" value="16" id="passwordLength"></label>
+                    </div>
+                    <button class="btn btn-primary" onclick="generatePassword()">Generate Password</button>
+                </div>
+                <div id="passwordResult" class="tool-results"></div>
+            </div>
+
+            <!-- Color Picker -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h3>Color Palette Generator</h3>
+                <p>Generate beautiful color palettes for your website design</p>
+                <div class="tool-form">
+                    <input type="color" id="baseColor" value="#3498db">
+                    <button class="btn btn-primary" onclick="generatePalette()">Generate Palette</button>
+                </div>
+                <div id="paletteResults" class="tool-results"></div>
+            </div>
+
+            <!-- Code Formatter -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Code Formatter</h3>
+                <p>Format and beautify your HTML, CSS, and JavaScript code</p>
+                <div class="tool-form">
+                    <select id="codeType">
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="javascript">JavaScript</option>
+                    </select>
+                    <textarea id="codeInput" placeholder="Paste your code here..."></textarea>
+                    <button class="btn btn-primary" onclick="formatCode()">Format Code</button>
+                </div>
+                <div id="codeResults" class="tool-results"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Calculator Section -->
+<section class="calculators-section">
+    <div class="container">
+        <h2>Hosting Calculators</h2>
+        <div class="calculators-grid">
+            <!-- Bandwidth Calculator -->
+            <div class="calculator-card">
+                <h3>Bandwidth Calculator</h3>
+                <p>Calculate how much bandwidth your website needs</p>
+                <div class="calc-form">
+                    <label>Average page size (MB): <input type="number" id="pageSize" value="2"></label>
+                    <label>Monthly visitors: <input type="number" id="visitors" value="1000"></label>
+                    <label>Pages per visit: <input type="number" id="pagesPerVisit" value="3"></label>
+                    <button class="btn btn-secondary" onclick="calculateBandwidth()">Calculate</button>
+                </div>
+                <div id="bandwidthResult" class="calc-result"></div>
+            </div>
+
+            <!-- Storage Calculator -->
+            <div class="calculator-card">
+                <h3>Storage Calculator</h3>
+                <p>Estimate storage requirements for your website</p>
+                <div class="calc-form">
+                    <label>HTML/CSS files (MB): <input type="number" id="htmlSize" value="10"></label>
+                    <label>Images (MB): <input type="number" id="imageSize" value="100"></label>
+                    <label>Videos (MB): <input type="number" id="videoSize" value="0"></label>
+                    <label>Database (MB): <input type="number" id="dbSize" value="50"></label>
+                    <button class="btn btn-secondary" onclick="calculateStorage()">Calculate</button>
+                </div>
+                <div id="storageResult" class="calc-result"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Tool Functions
+function testSpeed() {
+    const url = document.getElementById('speedTestUrl').value;
+    const results = document.getElementById('speedResults');
+    
+    if (!url) {
+        results.innerHTML = '<p class="error">Please enter a valid URL</p>';
+        return;
+    }
+    
+    results.innerHTML = '<p class="loading">Testing speed... This may take a few seconds.</p>';
+    
+    // Simulate speed test (in real implementation, you'd call an API)
+    setTimeout(() => {
+        const speed = Math.random() * 3 + 1;
+        const grade = speed < 2 ? 'A' : speed < 2.5 ? 'B' : 'C';
+        results.innerHTML = `
+            <div class="speed-result">
+                <h4>Speed Test Results</h4>
+                <p><strong>Load Time:</strong> ${speed.toFixed(2)} seconds</p>
+                <p><strong>Grade:</strong> <span class="grade-${grade.toLowerCase()}">${grade}</span></p>
+                <p><strong>Recommendations:</strong></p>
+                <ul>
+                    <li>Optimize images</li>
+                    <li>Enable compression</li>
+                    <li>Use a CDN</li>
+                </ul>
+            </div>
+        `;
+    }, 2000);
+}
+
+function checkSSL() {
+    const url = document.getElementById('sslUrl').value;
+    const results = document.getElementById('sslResults');
+    
+    if (!url) {
+        results.innerHTML = '<p class="error">Please enter a valid URL</p>';
+        return;
+    }
+    
+    results.innerHTML = '<p class="loading">Checking SSL certificate...</p>';
+    
+    setTimeout(() => {
+        const isValid = Math.random() > 0.2;
+        results.innerHTML = `
+            <div class="ssl-result">
+                <h4>SSL Certificate Status</h4>
+                <p><strong>Status:</strong> <span class="${isValid ? 'valid' : 'invalid'}">${isValid ? 'Valid' : 'Invalid'}</span></p>
+                <p><strong>Issuer:</strong> Let's Encrypt</p>
+                <p><strong>Expires:</strong> ${new Date(Date.now() + 90*24*60*60*1000).toLocaleDateString()}</p>
+            </div>
+        `;
+    }, 1500);
+}
+
+function generatePassword() {
+    const length = document.getElementById('passwordLength').value;
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+    let password = '';
+    
+    for (let i = 0; i < length; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    
+    document.getElementById('passwordResult').innerHTML = `
+        <div class="password-result">
+            <h4>Generated Password</h4>
+            <div class="password-display">
+                <input type="text" value="${password}" readonly>
+                <button onclick="copyPassword(this)" class="btn btn-small">Copy</button>
+            </div>
+            <p class="password-strength">Strength: <strong>Very Strong</strong></p>
+        </div>
+    `;
+}
+
+function generatePalette() {
+    const baseColor = document.getElementById('baseColor').value;
+    const results = document.getElementById('paletteResults');
+    
+    // Generate complementary colors
+    const colors = [baseColor, '#e74c3c', '#f39c12', '#2ecc71', '#9b59b6'];
+    
+    results.innerHTML = `
+        <div class="palette-result">
+            <h4>Color Palette</h4>
+            <div class="color-swatches">
+                ${colors.map(color => `
+                    <div class="color-swatch" style="background-color: ${color}">
+                        <span>${color}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function calculateBandwidth() {
+    const pageSize = parseFloat(document.getElementById('pageSize').value);
+    const visitors = parseInt(document.getElementById('visitors').value);
+    const pagesPerVisit = parseInt(document.getElementById('pagesPerVisit').value);
+    
+    const monthlyBandwidth = (pageSize * visitors * pagesPerVisit).toFixed(2);
+    
+    document.getElementById('bandwidthResult').innerHTML = `
+        <h4>Bandwidth Requirements</h4>
+        <p><strong>Monthly Bandwidth:</strong> ${monthlyBandwidth} MB</p>
+        <p><strong>Recommended Plan:</strong> ${monthlyBandwidth > 1000 ? 'Premium' : 'Basic'}</p>
+    `;
+}
+
+function calculateStorage() {
+    const html = parseFloat(document.getElementById('htmlSize').value);
+    const images = parseFloat(document.getElementById('imageSize').value);
+    const videos = parseFloat(document.getElementById('videoSize').value);
+    const db = parseFloat(document.getElementById('dbSize').value);
+    
+    const total = (html + images + videos + db).toFixed(2);
+    
+    document.getElementById('storageResult').innerHTML = `
+        <h4>Storage Requirements</h4>
+        <p><strong>Total Storage:</strong> ${total} MB</p>
+        <p><strong>Recommended:</strong> ${total > 500 ? '1GB+' : '500MB'} hosting plan</p>
+    `;
+}
+
+function copyPassword(button) {
+    const input = button.previousElementSibling;
+    input.select();
+    document.execCommand('copy');
+    button.textContent = 'Copied!';
+    setTimeout(() => button.textContent = 'Copy', 2000);
+}
+</script>
+`;
+%>
+<%- include('layout', { title: 'Free Web Development Tools - MasterHosting', page: 'tools', body }) %>

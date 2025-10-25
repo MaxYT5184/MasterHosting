@@ -1,0 +1,324 @@
+<% 
+const body = `
+<!-- Documentation Hero -->
+<section class="docs-hero">
+    <div class="container">
+        <h1>MasterHosting Documentation</h1>
+        <p>Complete guides, tutorials, and reference materials for web hosting success</p>
+        <div class="docs-search">
+            <input type="text" placeholder="Search documentation..." id="docsSearch">
+            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Start Guide -->
+<section class="quick-start">
+    <div class="container">
+        <h2>Quick Start Guide</h2>
+        <div class="start-steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Create Account</h3>
+                <p>Sign up with your Google account for instant access to our hosting platform.</p>
+                <a href="/login" class="btn btn-secondary">Get Started</a>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Choose Domain</h3>
+                <p>Select your free subdomain or connect your existing custom domain.</p>
+                <a href="/order" class="btn btn-secondary">Order Now</a>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Upload Files</h3>
+                <p>Use our file manager or FTP to upload your website files and go live.</p>
+                <a href="#file-upload" class="btn btn-secondary">Learn How</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Documentation Categories -->
+<section class="docs-categories">
+    <div class="container">
+        <div class="categories-grid">
+            <div class="category-section">
+                <h2><i class="fas fa-rocket"></i> Getting Started</h2>
+                <ul class="docs-list">
+                    <li><a href="#account-setup">Account Setup & Verification</a></li>
+                    <li><a href="#domain-configuration">Domain Configuration Guide</a></li>
+                    <li><a href="#first-website">Publishing Your First Website</a></li>
+                    <li><a href="#control-panel">Using the Control Panel</a></li>
+                    <li><a href="#file-manager">File Manager Tutorial</a></li>
+                </ul>
+            </div>
+
+            <div class="category-section">
+                <h2><i class="fas fa-upload"></i> File Management</h2>
+                <ul class="docs-list">
+                    <li><a href="#ftp-setup">FTP/SFTP Setup Guide</a></li>
+                    <li><a href="#file-upload">Uploading Website Files</a></li>
+                    <li><a href="#file-permissions">File Permissions & Security</a></li>
+                    <li><a href="#backup-restore">Backup & Restore</a></li>
+                    <li><a href="#file-compression">File Compression & Archives</a></li>
+                </ul>
+            </div>
+
+            <div class="category-section">
+                <h2><i class="fas fa-globe"></i> Domain & DNS</h2>
+                <ul class="docs-list">
+                    <li><a href="#subdomain-setup">Free Subdomain Setup</a></li>
+                    <li><a href="#custom-domain">Custom Domain Connection</a></li>
+                    <li><a href="#dns-management">DNS Records Management</a></li>
+                    <li><a href="#ssl-setup">SSL Certificate Installation</a></li>
+                    <li><a href="#domain-redirect">Domain Redirects</a></li>
+                </ul>
+            </div>
+
+            <div class="category-section">
+                <h2><i class="fas fa-envelope"></i> Email Setup</h2>
+                <ul class="docs-list">
+                    <li><a href="#email-accounts">Creating Email Accounts</a></li>
+                    <li><a href="#email-clients">Email Client Configuration</a></li>
+                    <li><a href="#webmail-access">Webmail Access</a></li>
+                    <li><a href="#email-forwarding">Email Forwarding</a></li>
+                    <li><a href="#spam-protection">Spam Protection</a></li>
+                </ul>
+            </div>
+
+            <div class="category-section">
+                <h2><i class="fas fa-database"></i> Databases</h2>
+                <ul class="docs-list">
+                    <li><a href="#mysql-setup">MySQL Database Setup</a></li>
+                    <li><a href="#phpmyadmin">phpMyAdmin Guide</a></li>
+                    <li><a href="#database-backup">Database Backup & Import</a></li>
+                    <li><a href="#database-optimization">Database Optimization</a></li>
+                    <li><a href="#remote-access">Remote Database Access</a></li>
+                </ul>
+            </div>
+
+            <div class="category-section">
+                <h2><i class="fas fa-shield-alt"></i> Security</h2>
+                <ul class="docs-list">
+                    <li><a href="#security-best-practices">Security Best Practices</a></li>
+                    <li><a href="#password-security">Password Security</a></li>
+                    <li><a href="#malware-protection">Malware Protection</a></li>
+                    <li><a href="#firewall-settings">Firewall Configuration</a></li>
+                    <li><a href="#security-monitoring">Security Monitoring</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Detailed Guides -->
+<section class="detailed-guides">
+    <div class="container">
+        <div class="guide-content">
+            <h2 id="account-setup">Account Setup & Verification</h2>
+            <div class="guide-section">
+                <h3>Creating Your Account</h3>
+                <p>Getting started with MasterHosting is simple and secure. We use Google OAuth for authentication, which means you can sign up instantly with your existing Google account.</p>
+                
+                <div class="step-by-step">
+                    <div class="step">
+                        <h4>Step 1: Visit the Login Page</h4>
+                        <p>Navigate to our <a href="/login">login page</a> and click the "Sign in with Google" button.</p>
+                    </div>
+                    <div class="step">
+                        <h4>Step 2: Authorize Access</h4>
+                        <p>Google will ask you to authorize MasterHosting to access your basic profile information. This is completely secure and we only use this for account identification.</p>
+                    </div>
+                    <div class="step">
+                        <h4>Step 3: Complete Profile</h4>
+                        <p>Once authenticated, you'll be redirected to your dashboard where you can complete your profile and start hosting websites.</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4><i class="fas fa-info-circle"></i> Privacy & Security</h4>
+                    <p>We take your privacy seriously. We only collect the minimum information needed to provide our services and never share your data with third parties.</p>
+                </div>
+            </div>
+
+            <h2 id="domain-configuration">Domain Configuration Guide</h2>
+            <div class="guide-section">
+                <h3>Free Subdomain Setup</h3>
+                <p>Every MasterHosting account comes with a free subdomain in the format: yourname.masterhostinig.online</p>
+                
+                <h4>Choosing Your Subdomain</h4>
+                <ul>
+                    <li>Must be 3-50 characters long</li>
+                    <li>Can contain letters, numbers, and hyphens</li>
+                    <li>Cannot start or end with a hyphen</li>
+                    <li>Must be unique across our platform</li>
+                </ul>
+
+                <h4>Subdomain Best Practices</h4>
+                <ul>
+                    <li><strong>Keep it short:</strong> Shorter subdomains are easier to remember</li>
+                    <li><strong>Make it relevant:</strong> Use your name, brand, or website purpose</li>
+                    <li><strong>Avoid numbers:</strong> Unless they're part of your brand</li>
+                    <li><strong>Consider SEO:</strong> Include relevant keywords if possible</li>
+                </ul>
+
+                <h3>Custom Domain Connection</h3>
+                <p>Want to use your own domain? You can connect any domain you own to your MasterHosting account.</p>
+                
+                <h4>DNS Configuration</h4>
+                <p>To connect your custom domain, you'll need to update your DNS records:</p>
+                <div class="code-block">
+                    <pre>
+A Record: @ → 192.168.1.100
+CNAME Record: www → yourname.masterhostinig.online
+                    </pre>
+                </div>
+
+                <div class="warning-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> DNS Propagation</h4>
+                    <p>DNS changes can take 24-48 hours to propagate globally. Be patient and test from different locations.</p>
+                </div>
+            </div>
+
+            <h2 id="file-upload">Uploading Website Files</h2>
+            <div class="guide-section">
+                <h3>Using the File Manager</h3>
+                <p>Our built-in file manager provides an easy way to upload and manage your website files directly from your browser.</p>
+                
+                <h4>File Manager Features</h4>
+                <ul>
+                    <li>Drag-and-drop file uploads</li>
+                    <li>Folder creation and management</li>
+                    <li>File editing with syntax highlighting</li>
+                    <li>File permissions management</li>
+                    <li>Bulk file operations</li>
+                </ul>
+
+                <h3>FTP/SFTP Access</h3>
+                <p>For advanced users, we provide FTP and SFTP access for faster file transfers and integration with development tools.</p>
+                
+                <h4>FTP Connection Details</h4>
+                <div class="connection-details">
+                    <p><strong>Server:</strong> ftp.masterhostinig.online</p>
+                    <p><strong>Port:</strong> 21 (FTP) or 22 (SFTP)</p>
+                    <p><strong>Username:</strong> Your account username</p>
+                    <p><strong>Password:</strong> Your account password</p>
+                </div>
+
+                <h4>Recommended FTP Clients</h4>
+                <ul>
+                    <li><strong>FileZilla:</strong> Free, cross-platform FTP client</li>
+                    <li><strong>WinSCP:</strong> Windows SFTP client</li>
+                    <li><strong>Cyberduck:</strong> Mac and Windows FTP client</li>
+                    <li><strong>VS Code:</strong> With FTP extensions for developers</li>
+                </ul>
+            </div>
+
+            <h2 id="ssl-setup">SSL Certificate Installation</h2>
+            <div class="guide-section">
+                <h3>Free SSL Certificates</h3>
+                <p>All MasterHosting accounts include free SSL certificates powered by Let's Encrypt. SSL certificates encrypt data between your website and visitors, improving security and SEO rankings.</p>
+                
+                <h4>Automatic SSL Installation</h4>
+                <p>For subdomains (yourname.masterhostinig.online), SSL certificates are automatically installed and renewed. No action required!</p>
+
+                <h4>Custom Domain SSL</h4>
+                <p>For custom domains, SSL certificates are automatically generated once your domain is properly configured and pointing to our servers.</p>
+
+                <div class="tip-box">
+                    <h4><i class="fas fa-lightbulb"></i> SSL Best Practices</h4>
+                    <ul>
+                        <li>Always redirect HTTP to HTTPS</li>
+                        <li>Update all internal links to use HTTPS</li>
+                        <li>Check for mixed content warnings</li>
+                        <li>Monitor certificate expiration dates</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 id="security-best-practices">Security Best Practices</h2>
+            <div class="guide-section">
+                <h3>Account Security</h3>
+                <p>Protecting your hosting account is crucial for maintaining website security and preventing unauthorized access.</p>
+                
+                <h4>Strong Password Guidelines</h4>
+                <ul>
+                    <li>Use at least 12 characters</li>
+                    <li>Include uppercase and lowercase letters</li>
+                    <li>Add numbers and special characters</li>
+                    <li>Avoid dictionary words and personal information</li>
+                    <li>Use a unique password for each account</li>
+                </ul>
+
+                <h3>Website Security</h3>
+                <h4>File Permissions</h4>
+                <p>Proper file permissions prevent unauthorized access to your website files:</p>
+                <ul>
+                    <li><strong>Directories:</strong> 755 (rwxr-xr-x)</li>
+                    <li><strong>PHP Files:</strong> 644 (rw-r--r--)</li>
+                    <li><strong>HTML/CSS/JS:</strong> 644 (rw-r--r--)</li>
+                    <li><strong>Config Files:</strong> 600 (rw-------)</li>
+                </ul>
+
+                <h4>Regular Updates</h4>
+                <p>Keep your website software updated:</p>
+                <ul>
+                    <li>Update CMS platforms (WordPress, Drupal, etc.)</li>
+                    <li>Update plugins and themes</li>
+                    <li>Remove unused plugins and themes</li>
+                    <li>Monitor security advisories</li>
+                </ul>
+
+                <div class="security-checklist">
+                    <h4>Security Checklist</h4>
+                    <ul class="checklist">
+                        <li>✓ Strong, unique passwords</li>
+                        <li>✓ SSL certificate installed</li>
+                        <li>✓ Regular backups scheduled</li>
+                        <li>✓ Software kept up to date</li>
+                        <li>✓ File permissions properly set</li>
+                        <li>✓ Unused files removed</li>
+                        <li>✓ Security monitoring enabled</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="docs-faq">
+    <div class="container">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>How long does it take to set up hosting?</h3>
+                <p>Most hosting accounts are activated instantly after signup. Custom domain configurations may take 24-48 hours for DNS propagation.</p>
+            </div>
+            <div class="faq-item">
+                <h3>What file types can I upload?</h3>
+                <p>You can upload most web-compatible files including HTML, CSS, JavaScript, PHP, images, and documents. Executable files are restricted for security.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How much storage do I get?</h3>
+                <p>Free accounts include 1GB of storage and 10GB monthly bandwidth. This is sufficient for most personal websites and small projects.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Can I use a custom domain?</h3>
+                <p>Yes! You can connect any domain you own by updating your DNS records to point to our servers. SSL certificates are automatically provided.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Is there email hosting included?</h3>
+                <p>Basic email forwarding is included. For full email hosting with IMAP/POP3 access, consider upgrading to our premium plans.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How do I backup my website?</h3>
+                <p>Use the file manager to download your files, or set up automated backups through your control panel. We also provide daily server-level backups.</p>
+            </div>
+        </div>
+    </div>
+</section>
+`;
+%>
+<%- include('layout', { title: 'Documentation - MasterHosting', page: 'docs', body }) %>

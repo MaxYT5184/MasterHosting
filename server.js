@@ -216,6 +216,50 @@ app.get('/about', (req, res) => {
   });
 });
 
+// Blog page
+app.get('/blog', (req, res) => {
+  res.render('blog', { 
+    title: 'Knowledge Base & Blog - MasterHosting',
+    page: 'blog',
+    description: 'Expert web hosting guides, tutorials, and insights. Learn about hosting types, security, performance optimization, and web development best practices.',
+    keywords: 'web hosting blog, hosting tutorials, website guides, hosting tips, web development, server management'
+  });
+});
+
+// Blog article - Complete hosting guide
+app.get('/blog/complete-guide-web-hosting', (req, res) => {
+  res.render('blog-article-hosting-guide', { 
+    title: 'Complete Guide to Web Hosting - MasterHosting',
+    page: 'blog',
+    description: 'Comprehensive guide covering all types of web hosting: shared, VPS, dedicated, and cloud hosting. Learn how to choose the right hosting solution.',
+    keywords: 'web hosting guide, hosting types, shared hosting, VPS hosting, dedicated servers, cloud hosting, hosting comparison'
+  });
+});
+
+// Tools page
+app.get('/tools', (req, res) => {
+  res.render('tools', { 
+    title: 'Free Web Development Tools - MasterHosting',
+    page: 'tools',
+    description: 'Free web development tools including website speed test, SSL checker, domain availability, password generator, and hosting calculators.',
+    keywords: 'web development tools, website speed test, SSL checker, domain checker, password generator, hosting calculator, free tools'
+  });
+});
+
+// Documentation page
+app.get('/documentation', (req, res) => {
+  res.render('documentation', { 
+    title: 'Documentation - MasterHosting',
+    page: 'docs',
+    description: 'Complete MasterHosting documentation with setup guides, tutorials, and reference materials for successful web hosting.',
+    keywords: 'hosting documentation, setup guide, hosting tutorial, file upload, domain setup, SSL installation, hosting help'
+  });
+});
+
+app.get('/docs', (req, res) => {
+  res.redirect('/documentation');
+});
+
 // Info page (About the Creator)
 app.get('/info', (req, res) => {
   res.render('info', { 
